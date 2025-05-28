@@ -361,6 +361,47 @@ class Team{
 
 };
 
+class Battle{
+    public:
+    Team Team1;
+    Team Team2;
+    vector<Pokemon> Team1Pokemons;
+    vector<Pokemon> Team2Pokemons;
+
+    int round;
+
+
+    int calculateSpaces(){
+
+        
+
+    }
+    
+    void updateBattleArena(){
+        cout << "\n\n" << "Round " << round << "\n\n" << endl;
+
+
+
+
+
+    }
+
+
+
+
+
+
+};
+
+void updateBattle(){
+
+
+}
+
+void battle(Team &Team1, Team &Team2){
+
+
+}
 
 
 

@@ -10,3 +10,7 @@ atak menüsü
 charizard                   karuseeeeee karuseeeeeeee lavivalvalvallva karuseee
 hp 
 yukarıyı gösteren ok
+
+
+charizard           eiscue
+50/100              100/100

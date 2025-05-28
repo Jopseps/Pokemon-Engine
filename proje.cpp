@@ -24,6 +24,7 @@ class Trainer{
     }
 };
 
+
 vector<Pokemon*> allPokemons;
 
 class Pokemon{

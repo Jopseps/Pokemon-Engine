@@ -146,6 +146,37 @@ class Pokemon{
         }
         return false;
     }
+
+    int calculateDamage(const Pokemon &attackedPokemon){
+        int damage = attackPower;
+
+        if(checkStrenghts(attackedPokemon.type) == true){
+            damage *= 2;
+        }
+        if(checkWeakness(attackedPokemon.type) == true){
+            damage /= 2;
+        }
+
+        return damage;
+    }
+
+    void damage(Pokemon &attackedPokemon, int dmg){
+        if(attackedPokemon.health <= dmg){
+            attackedPokemon.health = 0;
+            cout << attackedPokemon.name << " is fainted" << endl;
+            return;
+
+        }
+        if(attackedPokemon.health > dmg){
+            attackedPokemon.health -= dmg;
+            cout << attackedPokemon.name << " got " << damage << " damage!" << endl;
+            return;
+        }
+    }
+
+    void attack(Pokemon &attackedPokemon){
+        damage(attackedPokemon, calculateDamage(attackedPokemon));
+    }
 };
 
 int Pokemon::PokemonCount = 0;
@@ -166,6 +197,18 @@ void assignTypeFeatures(){
             allPokemons[i]->weaknesses.push_back("Fire");
             allPokemons[i]->weaknesses.push_back("Ice");
         }
+        if(allPokemons[i]->type == "Fighting"){
+            allPokemons[i]->strengths.push_back("Ice");
+            allPokemons[i]->strengths.push_back("Rock");
+            allPokemons[i]->weaknesses.push_back("Fairy");
+            allPokemons[i]->weaknesses.push_back("Water");
+        }
+        if(allPokemons[i]->type == "Electric"){
+            allPokemons[i]->strengths.push_back("Water");
+            allPokemons[i]->strengths.push_back("Steel"); // Mana
+            allPokemons[i]->weaknesses.push_back("Grass");
+            allPokemons[i]->weaknesses.push_back("Electric");
+        }
 
     }
 
@@ -178,6 +221,11 @@ class Fire : public Pokemon{
     virtual void fire(){
         cout << name << " breathed fire!" << endl;
     }
+
+    virtual void fire(Pokemon &attackedPokemon){
+        cout << name << " used fire on " << attackedPokemon.name << "!" << endl;
+        attack(attackedPokemon);
+    }
 };
 
 
@@ -188,12 +236,22 @@ class Fighting : public Pokemon{
     virtual void fight(){
         cout << name << " showed its fighting skills!" << endl;
     }
+
+    virtual void fight(Pokemon &attackedPokemon){
+        cout << name << " throwed a solid punch to " << attackedPokemon.name << "!" << endl;
+        attack(attackedPokemon);
+    }
 };
 
 class Water : public Pokemon{
     public:
     virtual void spray(){
         cout << name << " sprayed water!" << endl;
+    }
+
+    virtual void spray(Pokemon &attackedPokemon){
+        cout << name << " sprayed pressured water on " << attackedPokemon.name << "!" << endl;
+        attack(attackedPokemon);
     }
 };
 
@@ -203,6 +261,11 @@ class Ice : public Pokemon{
     virtual void freeze(){
         cout << name << " rained a few snowflakes!" << endl;
     }
+
+    virtual void freeze(Pokemon &attackedPokemon){
+        cout << name << " freezed " << attackedPokemon.name << "!" << endl;
+        attack(attackedPokemon);
+    }
 };
 
 class Electric : public Pokemon{
@@ -210,6 +273,11 @@ class Electric : public Pokemon{
     
     virtual void electrocute(){
         cout << name << " casually lighted a light bulb!" << endl;
+    }
+    
+    virtual void electrocute(Pokemon &attackedPokemon){
+        cout << name << " electrocuted " << attackedPokemon.name << "!" << endl;
+        attack(attackedPokemon);
     }
 };
 

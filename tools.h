@@ -10,6 +10,7 @@ int CalculateStringLength(int a){
     return stringBuffer.length();
 }
 char getArrowKey(){
+    cout << "getArrowKey function called | DEBUG" << endl;
     if(getchar() == '\033'){ // if the first value is esc
         getchar(); // skip the [
         int value = getchar();

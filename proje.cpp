@@ -61,14 +61,16 @@ class Pokemon{
     static int PokemonCount;
     Pokemon(){
         name = "Unknown";
-        maxHealth, health = 1;
+        maxHealth = 1;
+        health = 1;
         attackPower = 1;
         allPokemons.push_back(this);
     }
-
+    
     Pokemon(string n, int h, int aP){
         name = n;
-        maxHealth, health = h;
+        maxHealth = h;
+        health = h;
         attackPower = aP;
         allPokemons.push_back(this);
         
@@ -90,15 +92,26 @@ class Pokemon{
         }else{
             exp += amount * expGainMultiplier;
         }
-        if(exp >= levelUpThreshold) levelUp(1);
+        if(exp >= levelUpThreshold) levelUp();
     }
 
-    void levelUp(int quantity){
+    void levelUp(){
+        while(exp >= levelUpThreshold){
+            level++;
+            exp -= levelUpThreshold;
+            levelUpThreshold =  solidLevelUpThreshold * pow(level, 2/3);
+        }
+    }
+
+
+
+    // Retired levelUp function
+    /*void levelUp(int quantity){
         level += quantity;
         exp -= levelUpThreshold;
         levelUpThreshold =  solidLevelUpThreshold * pow(level, 2/3);
         if(exp >= levelUpThreshold) levelUp(1);
-    }
+    }*/
 
     void pokedex(){
         for(int i = 1; i <= 20; i++){cout << "-"; if(i == 10) cout << " Pokedex ";}; cout << endl;
@@ -496,10 +509,11 @@ class Battle{
 
     }  
     
-    Pokemon *selectAttackedPokemon(Team *attackedTeam){
+    Pokemon selectAttackedPokemon(Team *attackedTeam){
         int currentSelectedPokemon = 1;
-        char pressedButton;
+        char pressedButton = '0';
         Pokemon *SelectedAttackingPokemonPtr = nullptr;
+        cout << "Hello" << endl;
         while(SelectedAttackingPokemonPtr == nullptr){
             pressedButton = getArrowKey(); 
             if(pressedButton == 'd'){
@@ -513,11 +527,10 @@ class Battle{
                 pressedButton = getArrowKey(); 
                 if(pressedButton == '\n'){
                     SelectedAttackingPokemonPtr = attackedTeam->teamMembers[currentSelectedPokemon - 1];
-                    return SelectedAttackingPokemonPtr;
+                    return *SelectedAttackingPokemonPtr;
                 }
             }
-    }
-
+        }
     }
 
     Pokemon getAttackingPokemon(){
@@ -531,8 +544,17 @@ class Battle{
 
     void drawAttackGUI(Pokemon *attackedPokemon){
         cout << "Select a Pokemon to attack " << attackedPokemon->name << endl;
-        if(whosTurn == 1) displayBattlingTeam(*Team1);
-        if(whosTurn == 2) displayBattlingTeam(*Team2);
+        Pokemon *attackingPokemon;
+        if(whosTurn == 1){
+            displayBattlingTeam(*Team1);
+            *attackingPokemon = selectAttackedPokemon(Team1);
+
+        };
+        if(whosTurn == 2){
+            displayBattlingTeam(*Team2);
+            *attackingPokemon = selectAttackedPokemon(Team2);
+
+        };
 
 
 
@@ -596,7 +618,9 @@ int main(){
     Team Hacilar = {"Hacilar"};
     Hacilar.addMember(plusle);
     Hacilar.displayMembers();
+
     eiscue.gainExp(1050);
+    
     OGLER.displayMembers();
 
     Battle Battle1;

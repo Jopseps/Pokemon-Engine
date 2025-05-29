@@ -14,3 +14,5 @@ yukarıyı gösteren ok
 
 charizard          eiscue
 50/100             100/100
+
+displayTeam ve displayArrow ayrı zubudu

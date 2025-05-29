@@ -388,21 +388,24 @@ class Battle{
 
     int round = 1;
     int selectedPokemon = 1;
+    int selectedAttackingPokemon = 1;
 
     // 1 is for Team1 and 2 is for Team2
     int whosTurn = 2;
+    
+    // Example _C_harizard            _ _ there to here
+    int characterBetweenTwo = 20;
 
     void addTeam(Team *addedTeam, int teamSlot){
         if(teamSlot == 1) Team1 = addedTeam;
         if(teamSlot == 2) Team2 = addedTeam;
     }
 
-    // It works like frame_generate()
-    void updateBattleArena(Team *currentTeam, bool isItThisTeamsTurn){
+
+    void displayBattlingTeam(Team *currentTeam){
         cout << endl;
 
-        // Example _C_harizard            _ _ there to here
-        int characterBetweenTwo = 20;
+
         int tempCharacterCount;
 
         
@@ -432,16 +435,29 @@ class Battle{
         }
 
         cout << endl;
-        
-        // Arrow
-        if(isItThisTeamsTurn == false){
-            for(int i = 0; i < selectedPokemon - 1; i++){
+
+    }
+
+    void displayArrow(int selectedColumn){
+        for(int i = 0; i < selectedColumn - 1; i++){
                 for(int i = 0; i < characterBetweenTwo; i++){
                     cout << " ";
                 }
             }
 
             cout << "  ↑" << endl;
+
+    }
+
+    // It works like frame_generate()
+    void updateBattleArena(Team *currentTeam, bool isItThisTeamsTurn){
+        int tempCharacterCount;
+
+        displayBattlingTeam(currentTeam);
+
+        // Arrow
+        if(isItThisTeamsTurn == false){
+            displayArrow(selectedPokemon);
         }
     }
     void updateRound(){
@@ -459,6 +475,36 @@ class Battle{
 
     }  
     
+    void selectAttackedPokemon(){
+        
+
+
+    }
+
+    Pokemon getAttackingPokemon(){
+        if(whosTurn == 1){
+            return Team1->teamMembers[selectedAttackingPokemon - 1];
+        }
+        if(whosTurn == 2){
+            return Team2->teamMembers[selectedAttackingPokemon - 1];
+        }
+        else printf("Error nego -del");
+    }
+
+    void drawAttackGUI(Pokemon *attackedPokemon, Pokemon *attackingPokemon){
+        cout << "Select a Pokemon to attack " << attackedPokemon->name << endl;
+        if(whosTurn == 1) displayBattlingTeam(Team1);
+        if(whosTurn == 2) displayBattlingTeam(Team2);
+
+
+    }
+
+    void attack(Pokemon *attackedPokemon){
+
+
+
+
+    }
 
 
     

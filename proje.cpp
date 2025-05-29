@@ -90,13 +90,14 @@ class Pokemon{
         }else{
             exp += amount * expGainMultiplier;
         }
+        if(exp >= levelUpThreshold) levelUp(1);
     }
 
     void levelUp(int quantity){
         level += quantity;
         exp -= levelUpThreshold;
         levelUpThreshold =  solidLevelUpThreshold * pow(level, 2/3);
-        
+        if(exp >= levelUpThreshold) levelUp(1);
     }
 
     void pokedex(){
@@ -162,22 +163,23 @@ class Pokemon{
         return damage;
     }
 
-    void damage(Pokemon &attackedPokemon, int dmg){
+    int damage(Pokemon &attackedPokemon, int dmg){
         if(attackedPokemon.health <= dmg){
             attackedPokemon.health = 0;
             cout << attackedPokemon.name << " is fainted" << endl;
-            return;
+            return dmg;
 
         }
         if(attackedPokemon.health > dmg){
             attackedPokemon.health -= dmg;
             cout << attackedPokemon.name << " got " << dmg << " damage!" << endl;
-            return;
+            return dmg;
         }
+        return 0;
     }
 
     void attack(Pokemon &attackedPokemon){
-        damage(attackedPokemon, calculateDamage(attackedPokemon));
+        gainExp(damage(attackedPokemon, calculateDamage(attackedPokemon))) ;
     }
 };
 
@@ -210,6 +212,12 @@ void assignTypeFeatures(){
             allPokemons[i]->strengths.push_back("Steel"); // Mana
             allPokemons[i]->weaknesses.push_back("Grass");
             allPokemons[i]->weaknesses.push_back("Electric");
+        }
+         if(allPokemons[i]->type == "Grass"){
+            allPokemons[i]->strengths.push_back("Water");
+            allPokemons[i]->strengths.push_back("Rock");
+            allPokemons[i]->weaknesses.push_back("Grass");
+            allPokemons[i]->weaknesses.push_back("Fire");
         }
 
     }
@@ -283,6 +291,19 @@ class Electric : public Pokemon{
     }
 };
 
+class Grass : public Pokemon{
+    public:
+    
+    virtual void ivy(){
+        cout << name << " showed up a bunch of vines out of the grass!" << endl;
+    }
+    
+    virtual void ivy(Pokemon &attackedPokemon){
+        cout << name << " catched " << attackedPokemon.name << " with vines!" << endl;
+        attack(attackedPokemon);
+    }
+};
+
 
 class Charizard : public Fire{
     public:
@@ -339,7 +360,7 @@ class Plusle : public Electric{
 class Team{
     public:
     string teamName;
-    vector<Pokemon> teamMembers;
+    vector<Pokemon*> teamMembers;
     unsigned int teamMemberCount = 0;
     
     Team(string tN){
@@ -350,7 +371,7 @@ class Team{
     }
 
     void addMember(Pokemon &addedMember){
-        teamMembers.push_back(addedMember);
+        teamMembers.push_back(&addedMember);
         addedMember.assignedTeam = this;
         teamMemberCount ++;
     }
@@ -361,7 +382,7 @@ class Team{
             if(teamMemberCount != 0){
                 cout << "Members of "<< teamName << ":" << endl;
                 for(int i = 0; i < teamMemberCount; i++){
-                            cout << i + 1 << ". " << teamMembers[i].name << "   " << teamMembers[i].level << "   " << teamMembers[i].exp << "/" << teamMembers[i].levelUpThreshold << endl;
+                            cout << i + 1 << ". " << teamMembers[i]->name << "   " << teamMembers[i]->level << "   " << teamMembers[i]->exp << "/" << teamMembers[i]->levelUpThreshold << endl;
                         }
             }else cout << teamName << " doesn't have members yet" << endl;
         
@@ -373,7 +394,7 @@ class Team{
 
     void healAllPokemons(){
         for(int i = 0; i < size(teamMembers); i++){
-            teamMembers[i].health = teamMembers[i].maxHealth;
+            teamMembers[i]->health = teamMembers[i]->maxHealth;
         }
     }
 
@@ -402,7 +423,7 @@ class Battle{
     }
 
 
-    void displayBattlingTeam(Team *currentTeam){
+    void displayBattlingTeam(Team &currentTeam){
         cout << endl;
 
 
@@ -411,9 +432,9 @@ class Battle{
         
         
         // Names
-        for(int i = 0; i < currentTeam->teamMemberCount; i++){
-            tempCharacterCount = characterBetweenTwo - CalculateStringLength(currentTeam->teamMembers[i].name);
-            cout << currentTeam->teamMembers[i].name;
+        for(int i = 0; i < currentTeam.teamMemberCount; i++){               // Pointerdan her daim -> Arrow operator (goat) çıkıyo
+            tempCharacterCount = characterBetweenTwo - CalculateStringLength(currentTeam.teamMembers[i]->name);
+            cout << currentTeam.teamMembers[i]->name;
             
             for(int i = 0; i < tempCharacterCount; i++){
                 cout << " ";
@@ -424,9 +445,9 @@ class Battle{
         cout << endl;
         
         // Health
-        for(int i = 0; i < currentTeam->teamMemberCount; i++){
-            tempCharacterCount = characterBetweenTwo - (CalculateStringLength(currentTeam->teamMembers[i].health) + CalculateStringLength(currentTeam->teamMembers[i].health) + 1);
-            cout << currentTeam->teamMembers[i].health << "/" << currentTeam->teamMembers[i].maxHealth;
+        for(int i = 0; i < currentTeam.teamMemberCount; i++){
+            tempCharacterCount = characterBetweenTwo - (CalculateStringLength(currentTeam.teamMembers[i]->health) + CalculateStringLength(currentTeam.teamMembers[i]->health) + 1);
+            cout << currentTeam.teamMembers[i]->health << "/" << currentTeam.teamMembers[i]->maxHealth;
             
             for(int i = 0; i < tempCharacterCount; i++){
                 cout << " ";
@@ -450,7 +471,7 @@ class Battle{
     }
 
     // It works like frame_generate()
-    void updateBattleArena(Team *currentTeam, bool isItThisTeamsTurn){
+    void updateBattleArena(Team &currentTeam, bool isItThisTeamsTurn){
         int tempCharacterCount;
 
         displayBattlingTeam(currentTeam);
@@ -462,46 +483,64 @@ class Battle{
     }
     void updateRound(){
         if(whosTurn == 1){
-            updateBattleArena(Team1, true);
-            updateBattleArena(Team2, false);
+            updateBattleArena(*Team1, true);
+            updateBattleArena(*Team2, false);
 
         }
         if(whosTurn == 2){
-            updateBattleArena(Team1, false);
-            updateBattleArena(Team2, true);
+            updateBattleArena(*Team1, false);
+            updateBattleArena(*Team2, true);
 
         }
 
 
     }  
     
-    void selectAttackedPokemon(){
-        
-
+    Pokemon *selectAttackedPokemon(Team *attackedTeam){
+        int currentSelectedPokemon = 1;
+        char pressedButton;
+        Pokemon *SelectedAttackingPokemonPtr = nullptr;
+        while(SelectedAttackingPokemonPtr == nullptr){
+            pressedButton = getArrowKey(); 
+            if(pressedButton == 'd'){
+                if(currentSelectedPokemon < size(attackedTeam->teamMembers)) currentSelectedPokemon++;
+            }
+            if(pressedButton == 'a'){
+                if(currentSelectedPokemon > 1) currentSelectedPokemon--;
+            }
+            if(pressedButton == '\n'){
+                cout << "Press enter again to confirm" << endl;
+                pressedButton = getArrowKey(); 
+                if(pressedButton == '\n'){
+                    SelectedAttackingPokemonPtr = attackedTeam->teamMembers[currentSelectedPokemon - 1];
+                    return SelectedAttackingPokemonPtr;
+                }
+            }
+    }
 
     }
 
     Pokemon getAttackingPokemon(){
         if(whosTurn == 1){
-            return Team1->teamMembers[selectedAttackingPokemon - 1];
+            return *Team1->teamMembers[selectedAttackingPokemon - 1];
         }
         if(whosTurn == 2){
-            return Team2->teamMembers[selectedAttackingPokemon - 1];
+            return *Team2->teamMembers[selectedAttackingPokemon - 1];
         }
-        else printf("Error nego -del");
     }
 
-    void drawAttackGUI(Pokemon *attackedPokemon, Pokemon *attackingPokemon){
+    void drawAttackGUI(Pokemon *attackedPokemon){
         cout << "Select a Pokemon to attack " << attackedPokemon->name << endl;
-        if(whosTurn == 1) displayBattlingTeam(Team1);
-        if(whosTurn == 2) displayBattlingTeam(Team2);
+        if(whosTurn == 1) displayBattlingTeam(*Team1);
+        if(whosTurn == 2) displayBattlingTeam(*Team2);
+
 
 
     }
 
     void attack(Pokemon *attackedPokemon){
-
-
+        //drawAttackGUI();
+ 
 
 
     }
@@ -557,6 +596,8 @@ int main(){
     Team Hacilar = {"Hacilar"};
     Hacilar.addMember(plusle);
     Hacilar.displayMembers();
+    eiscue.gainExp(1050);
+    OGLER.displayMembers();
 
     Battle Battle1;
     Battle1.addTeam(&OGLER, 1);

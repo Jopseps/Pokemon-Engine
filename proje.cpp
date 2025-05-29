@@ -3,6 +3,8 @@
 #include <math.h>
 using namespace std;
 
+#include "tools.h"
+
 class Team;
 
 
@@ -127,7 +129,7 @@ class Pokemon{
         }
             else{cout << "This Pokemon isn't weak against any type" << endl;}
 
-        for(int i = 1; i <= 29; i++) cout << "-"; cout << endl;
+        for(int i = 1; i <= 29; i++) cout << "-"; cout << endl << endl;
 
 
     }
@@ -169,7 +171,7 @@ class Pokemon{
         }
         if(attackedPokemon.health > dmg){
             attackedPokemon.health -= dmg;
-            cout << attackedPokemon.name << " got " << damage << " damage!" << endl;
+            cout << attackedPokemon.name << " got " << dmg << " damage!" << endl;
             return;
         }
     }
@@ -358,25 +360,82 @@ class Team{
 
     }
 
+    void healAllPokemons(){
+        for(int i = 0; i < size(teamMembers); i++){
+            teamMembers[i].health = teamMembers[i].maxHealth;
+        }
+    }
+
 
 };
 
 class Battle{
     public:
-    Team Team1;
-    Team Team2;
-    vector<Pokemon> Team1Pokemons;
-    vector<Pokemon> Team2Pokemons;
+    Team *Team1;
+    Team *Team2;
 
-    int round;
+    int round = 1;
+    int selectedPokemon = 1;
 
+    Team *whosTurn = Team1;
 
-    int calculateSpaces(){
+    void addTeam(Team *addedTeam, int teamSlot){
+        if(teamSlot == 1) Team1 = addedTeam;
+        if(teamSlot == 2) Team2 = addedTeam;
+    }
+
+    
+    int updateBattleArena(Team &currentTeam){
+        cout << endl;
+
+        // Example _C_harizard            _ _ there to here
+        int characterBetweenTwo = 20;
+        int tempCharacterCount;
 
         
+        
+        // Names
+        for(int i = 0; i < currentTeam.teamMemberCount; i++){
+            tempCharacterCount = characterBetweenTwo - CalculateStringLength(currentTeam.teamMembers[i].name);
+            cout << currentTeam.teamMembers[i].name;
+            
+            for(int i = 0; i < tempCharacterCount; i++){
+                cout << " ";
+            }
+
+        }
+
+        cout << endl;
+        
+        // Health
+        for(int i = 0; i < currentTeam.teamMemberCount; i++){
+            tempCharacterCount = characterBetweenTwo - (CalculateStringLength(currentTeam.teamMembers[i].health) + CalculateStringLength(currentTeam.teamMembers[i].health) + 1);
+            cout << currentTeam.teamMembers[i].health << "/" << currentTeam.teamMembers[i].maxHealth;
+            
+            for(int i = 0; i < tempCharacterCount; i++){
+                cout << " ";
+            }
+
+        }
+
+        cout << endl;
+        
+        // Arrow
+        for(int i = 0; i < selectedPokemon - 1; i++){
+            for(int i = 0; i < characterBetweenTwo; i++){
+                cout << " ";
+            }
+
+        }
+        cout << "  ↑" << endl;
+
+
+            
+
+        return 1;
 
     }
-    
+
     void updateBattleArena(){
         cout << "\n\n" << "Round " << round << "\n\n" << endl;
 
@@ -393,7 +452,7 @@ class Battle{
 
 };
 
-void updateBattle(){
+/*void updateBattle(){
 
 
 }
@@ -401,7 +460,7 @@ void updateBattle(){
 void battle(Team &Team1, Team &Team2){
 
 
-}
+}*/
 
 
 
@@ -426,4 +485,10 @@ int main(){
     OGLER.addMember(jolteon);
 
     OGLER.displayMembers();
+
+    Battle Battle1;
+    Battle1.addTeam(&OGLER, 1);
+    Battle1.updateBattleArena(OGLER);
 }
+
+

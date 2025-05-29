@@ -12,5 +12,5 @@ hp
 yukarıyı gösteren ok
 
 
-charizard           eiscue
-50/100              100/100
+charizard          eiscue
+50/100             100/100

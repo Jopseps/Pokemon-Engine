@@ -325,6 +325,17 @@ class Jolteon : public Electric{
     }
 };
 
+class Plusle : public Electric{
+    public:
+    Plusle(){
+        name = "Plusle";
+        maxHealth = health = 60;
+        attackPower = 20;
+        expGainMultiplier = 1.25;
+        type = "Electric";
+    }
+};
+
 class Team{
     public:
     string teamName;
@@ -373,19 +384,21 @@ class Battle{
     public:
     Team *Team1;
     Team *Team2;
+    vector<string> roundLog;
 
     int round = 1;
     int selectedPokemon = 1;
 
-    Team *whosTurn = Team1;
+    // 1 is for Team1 and 2 is for Team2
+    int whosTurn = 2;
 
     void addTeam(Team *addedTeam, int teamSlot){
         if(teamSlot == 1) Team1 = addedTeam;
         if(teamSlot == 2) Team2 = addedTeam;
     }
 
-    
-    int updateBattleArena(Team &currentTeam){
+    // It works like frame_generate()
+    void updateBattleArena(Team *currentTeam, bool isItThisTeamsTurn){
         cout << endl;
 
         // Example _C_harizard            _ _ there to here
@@ -395,9 +408,9 @@ class Battle{
         
         
         // Names
-        for(int i = 0; i < currentTeam.teamMemberCount; i++){
-            tempCharacterCount = characterBetweenTwo - CalculateStringLength(currentTeam.teamMembers[i].name);
-            cout << currentTeam.teamMembers[i].name;
+        for(int i = 0; i < currentTeam->teamMemberCount; i++){
+            tempCharacterCount = characterBetweenTwo - CalculateStringLength(currentTeam->teamMembers[i].name);
+            cout << currentTeam->teamMembers[i].name;
             
             for(int i = 0; i < tempCharacterCount; i++){
                 cout << " ";
@@ -408,9 +421,9 @@ class Battle{
         cout << endl;
         
         // Health
-        for(int i = 0; i < currentTeam.teamMemberCount; i++){
-            tempCharacterCount = characterBetweenTwo - (CalculateStringLength(currentTeam.teamMembers[i].health) + CalculateStringLength(currentTeam.teamMembers[i].health) + 1);
-            cout << currentTeam.teamMembers[i].health << "/" << currentTeam.teamMembers[i].maxHealth;
+        for(int i = 0; i < currentTeam->teamMemberCount; i++){
+            tempCharacterCount = characterBetweenTwo - (CalculateStringLength(currentTeam->teamMembers[i].health) + CalculateStringLength(currentTeam->teamMembers[i].health) + 1);
+            cout << currentTeam->teamMembers[i].health << "/" << currentTeam->teamMembers[i].maxHealth;
             
             for(int i = 0; i < tempCharacterCount; i++){
                 cout << " ";
@@ -421,29 +434,34 @@ class Battle{
         cout << endl;
         
         // Arrow
-        for(int i = 0; i < selectedPokemon - 1; i++){
-            for(int i = 0; i < characterBetweenTwo; i++){
-                cout << " ";
+        if(isItThisTeamsTurn == false){
+            for(int i = 0; i < selectedPokemon - 1; i++){
+                for(int i = 0; i < characterBetweenTwo; i++){
+                    cout << " ";
+                }
             }
 
+            cout << "  ↑" << endl;
         }
-        cout << "  ↑" << endl;
-
-
-            
-
-        return 1;
-
     }
+    void updateRound(){
+        if(whosTurn == 1){
+            updateBattleArena(Team1, true);
+            updateBattleArena(Team2, false);
 
-    void updateBattleArena(){
-        cout << "\n\n" << "Round " << round << "\n\n" << endl;
+        }
+        if(whosTurn == 2){
+            updateBattleArena(Team1, false);
+            updateBattleArena(Team2, true);
+
+        }
 
 
+    }  
+    
 
 
-
-    }
+    
 
 
 
@@ -473,6 +491,8 @@ int main(){
     Eiscue eiscue;
     Jolteon jolteon;
 
+    Plusle plusle;
+
     assignTypeFeatures();
 
     eiscue.pokedex();
@@ -486,9 +506,16 @@ int main(){
 
     OGLER.displayMembers();
 
+    
+
+    Team Hacilar = {"Hacilar"};
+    Hacilar.addMember(plusle);
+    Hacilar.displayMembers();
+
     Battle Battle1;
     Battle1.addTeam(&OGLER, 1);
-    Battle1.updateBattleArena(OGLER);
+    Battle1.addTeam(&Hacilar, 2);
+    Battle1.updateRound();
 }
 
 

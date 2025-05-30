@@ -11,28 +11,31 @@ int CalculateStringLength(int a){
 }
 char getArrowKey(){
     cout << "getArrowKey function called | DEBUG" << endl;
-    if(getchar() == '\033'){ // if the first value is esc
+    int ch = getchar();
+    if(ch == '\033'){ // if the first value is esc
         getchar(); // skip the [
         int value = getchar();
-        fputs("\n",stdin);
-        switch(value) { // the real value
+        cout << "DEBUG | Entered value is: " << value << endl;
+        switch(value) { // the real value new
             case 'A':
-              cout << "Up" << endl;
+                cout << "Up" << endl;
                 return 'w';
             case 'B':
-            cout << "Down" << endl;
+                cout << "Down" << endl;
                 return 's';
             case 'C':
-            cout << "Right" << endl;
+                cout << "Right" << endl;
                 return 'd';
             case 'D':
-            cout << "Left" << endl;
+                cout << "Left" << endl;
                 return 'a';
             default:
                 cout << "Unknown key" << endl;
-                return 0;
+                return value;
         }
+    } else if(ch == '\n'){
+        return '\n';
+    } else {
+        return 0;
     }
-    if(getchar() == '\n') return '\n';
-    else return 0;
 }

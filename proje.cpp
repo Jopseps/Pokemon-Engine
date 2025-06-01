@@ -633,7 +633,7 @@ class Battle{
             updateBattleArena(*Team1, true);
             updateBattleArena(*Team2, false);
             }
-            if(whosTurn == 2){
+            else if(whosTurn == 2){
             updateBattleArena(*Team1, false);
             updateBattleArena(*Team2, true);
             }   
@@ -643,10 +643,10 @@ class Battle{
             if(pressedButton == 'd'){
                 if(selectedPokemon < size(attackedTeam->teamMembers)) selectedPokemon++;
             }
-            if(pressedButton == 'a'){
+            else if(pressedButton == 'a'){
                 if(selectedPokemon > 1) selectedPokemon--;
             }
-            if(pressedButton == 'y' || pressedButton == 'Y'){
+            else if(pressedButton == 'y' || pressedButton == 'Y'){
                 cout << "Pokemon selected | DEBUG" << endl;
                     SelectedAttackedPokemonPtr = attackedTeam->teamMembers[selectedPokemon - 1];
                     isPokemonSelected = true;
@@ -654,7 +654,9 @@ class Battle{
             }
             else if(pressedButton != 'a' && pressedButton != 'd' && pressedButton != 'y' && pressedButton != 'Y'){
                 cout << "Invalid button try again" << endl;
+                pressedButton = '0';
             }
+            getchar();
             
 
         }

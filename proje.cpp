@@ -230,11 +230,17 @@ void assignTypeFeatures(){
             allPokemons[i]->weaknesses.push_back("Grass");
             allPokemons[i]->weaknesses.push_back("Electric");
         }
-         if(allPokemons[i]->type == "Grass"){
+        if(allPokemons[i]->type == "Grass"){
             allPokemons[i]->strengths.push_back("Water");
             allPokemons[i]->strengths.push_back("Rock");
             allPokemons[i]->weaknesses.push_back("Grass");
             allPokemons[i]->weaknesses.push_back("Fire");
+        }
+        if(allPokemons[i]->type == "Rock"){
+            allPokemons[i]->strengths.push_back("Fire");
+            allPokemons[i]->strengths.push_back("Ice");
+            allPokemons[i]->weaknesses.push_back("Fighting");
+            allPokemons[i]->weaknesses.push_back("Steel");
         }
 
     }
@@ -321,6 +327,19 @@ class Grass : public Pokemon{
     }
 };
 
+class Rock : public Pokemon{
+    public:
+    
+    virtual void boulder(){
+        cout << name << " pulled a bunch of rocks out of the ground!" << endl;
+    }
+    
+    virtual void boulder(Pokemon &attackedPokemon){
+        cout << name << " throwed a huge boulder on " << attackedPokemon.name << "!" << endl;
+        attack(attackedPokemon);
+    }
+};
+
 
 class Charizard : public Fire{
     public:
@@ -371,6 +390,16 @@ class Plusle : public Electric{
         attackPower = 20;
         expGainMultiplier = 1.25;
         type = "Electric";
+    }
+};
+
+class Rockruff : public Rock{
+    public:
+    Rockruff(){
+        name = "Rockruff";
+        maxHealth = health = 90;
+        attackPower = 12;
+        type = "Rock";
     }
 };
 
@@ -474,6 +503,21 @@ class Battle{
 
         cout << endl;
 
+        // Type
+        for(int i = 0; i < currentTeam.teamMemberCount; i++){               // Pointerdan her daim -> Arrow operator (goat) çıkıyo
+            tempCharacterCount = characterBetweenTwo - CalculateStringLength(currentTeam.teamMembers[i]->type);
+            cout << currentTeam.teamMembers[i]->type;
+            
+            for(int i = 0; i < tempCharacterCount; i++){
+                cout << " ";
+            }
+
+        }
+
+        
+
+        cout << endl;
+
     }
 
     void displayArrow(int selectedColumn){
@@ -496,21 +540,13 @@ class Battle{
             displayArrow(selectedPokemon);
         }
     }
+
     void updateRound(){
-        if(whosTurn == 1){
-            updateBattleArena(*Team1, true);
-            updateBattleArena(*Team2, false);
-            selectAttackedPokemon(Team2, whosTurn);
-        }
-        if(whosTurn == 2){
-            updateBattleArena(*Team1, false);
-            updateBattleArena(*Team2, true);
-            selectAttackedPokemon(Team1, whosTurn);
-        }
+        drawAttackGUI();
         
 
 
-    }  
+    }   
                                                     // Who's turn
     Pokemon *selectAttackedPokemon(Team *attackedTeam, int wT){
         selectedPokemon = 1;
@@ -519,70 +555,74 @@ class Battle{
         Pokemon *SelectedAttackedPokemonPtr = nullptr;
         cout << "Hello" << endl;
         while(isPokemonSelected == false){
-            pressedButton = getArrowKey(); 
-            if(pressedButton == 'd'){
-                if(selectedPokemon < size(attackedTeam->teamMembers)) selectedPokemon += 1;
-                cout << "DEBUG | size(attackedTeam->teamMembers) = " << size(attackedTeam->teamMembers) << endl;
-            }
-            if(pressedButton == 'a'){
-                if(selectedPokemon > 1) selectedPokemon -= 1;
-            }
-            if(pressedButton == 'y' || pressedButton == 'Y'){
-                cout << "Enter 'Y' again to confirm" << endl;
-                pressedButton = getArrowKey(); 
-                if(pressedButton == 'y' || pressedButton == 'Y'){
-                    SelectedAttackedPokemonPtr = attackedTeam->teamMembers[selectedPokemon - 1];
-                    isPokemonSelected = true;
-                    return SelectedAttackedPokemonPtr;
-                }
-            }else cout << "Invalid button try again" << endl;
+            cout << "DEBUG | selectedPokemon = " << selectedPokemon << endl;
+            cout << "DEBUG | size(attackedTeam->teamMembers) = " << size(attackedTeam->teamMembers) << endl;
+            cout << "DEBUG | attackedTeam->teamName = " << attackedTeam->teamName << endl;
             if(whosTurn == 1){
             updateBattleArena(*Team1, true);
             updateBattleArena(*Team2, false);
-        }  
+            }
             if(whosTurn == 2){
             updateBattleArena(*Team1, false);
             updateBattleArena(*Team2, true);
-        }
+            }   
+            
+            pressedButton = '0';
+            pressedButton = getArrowKey(); 
+            if(pressedButton == 'd'){
+                if(selectedPokemon < size(attackedTeam->teamMembers)) selectedPokemon++;
+            }
+            if(pressedButton == 'a'){
+                if(selectedPokemon > 1) selectedPokemon--;
+            }
+            if(pressedButton == 'y' || pressedButton == 'Y'){
+                cout << "Pokemon selected | DEBUG" << endl;
+                    SelectedAttackedPokemonPtr = attackedTeam->teamMembers[selectedPokemon - 1];
+                    isPokemonSelected = true;
+                    return SelectedAttackedPokemonPtr;
+            }
+            else if(pressedButton != 'a' && pressedButton != 'd' && pressedButton != 'y' && pressedButton != 'Y' || pressedButton != '\n'){
+                cout << "Invalid button try again" << endl;
+            }
             
 
         }
     }
 
-        Pokemon *selectAttackingPokemon(Team *attackingTeam, int wT){
-            selectedPokemon = 1;
-            bool isPokemonSelected = false;
-            char pressedButton = '0';
-            Pokemon *SelectedAttackingPokemonPtr = nullptr;
-            cout << "Hello" << endl;
-            while(isPokemonSelected == false){
-                pressedButton = getArrowKey(); 
-                if(pressedButton == 'd'){
-                    if(selectedPokemon < size(attackingTeam->teamMembers)) selectedPokemon++;
-                }
-                if(pressedButton == 'a'){
-                    if(selectedPokemon > 1) selectedPokemon--;
-                }
-                if(pressedButton == 'y' || pressedButton == 'Y'){
-                    cout << "Enter 'Y' again to confirm" << endl;
-                    pressedButton = getArrowKey(); 
-                    if(pressedButton == 'y' || pressedButton == 'Y'){
-                        SelectedAttackingPokemonPtr = attackingTeam->teamMembers[selectedPokemon - 1];
-                        isPokemonSelected = true;
-                        return SelectedAttackingPokemonPtr;
-                    }
-                }else cout << "Invalid button try again" << endl;
-                if(whosTurn == 1){
-                updateBattleArena(*Team1, false);
-                updateBattleArena(*Team2, true);
-                }
-                if(whosTurn == 2){
-                updateBattleArena(*Team1, true);
-                updateBattleArena(*Team2, false);
+    Pokemon *selectAttackingPokemon(Team *attackingTeam, int wT){
+        selectedPokemon = 1;
+        bool isPokemonSelected = false;
+        char pressedButton = '0';
+        Pokemon *SelectedAttackingPokemonPtr = nullptr;
+        cout << "Hello" << endl;
+        while(isPokemonSelected == false){
+            if(whosTurn == 1){
+            updateBattleArena(*Team1, false);
+            updateBattleArena(*Team2, true);
+            }
+            if(whosTurn == 2){
+            updateBattleArena(*Team1, true);
+            updateBattleArena(*Team2, false);
             }  
-                
-            
-                
+
+            pressedButton = '0';
+            pressedButton = getArrowKey(); 
+            if(pressedButton == 'd'){
+                if(selectedPokemon < size(attackingTeam->teamMembers)) selectedPokemon++;
+            }
+            if(pressedButton == 'a'){
+                if(selectedPokemon > 1) selectedPokemon--;
+            }
+            if(pressedButton == 'y' || pressedButton == 'Y'){
+                cout << "Pokemon selected | DEBUG" << endl;
+                    SelectedAttackingPokemonPtr = attackingTeam->teamMembers[selectedPokemon - 1];
+                    isPokemonSelected = true;
+                    return SelectedAttackingPokemonPtr;
+            }
+            else if(pressedButton != 'a' && pressedButton != 'd' && pressedButton != 'y' && pressedButton != 'Y'){
+                cout << "Invalid button try again" << endl;
+            }
+             
 
         }
     }
@@ -597,19 +637,41 @@ class Battle{
         }
     }
 
-    void drawAttackGUI(Pokemon *attackedPokemon){
-        cout << "Select a Pokemon to attack " << attackedPokemon->name << endl;
-        Pokemon *attackingPokemon;
+    void displayBattleInfo(){
+
+
+
+    }
+
+    void drawAttackGUI(){
+
+        cout << "Select a Pokemon to attack"<<  endl;
+        Pokemon *attackedPokemon;
         if(whosTurn == 1){
             displayBattlingTeam(*Team1);
-            attackingPokemon = selectAttackedPokemon(Team1, whosTurn);
+            attackedPokemon = selectAttackedPokemon(Team2, whosTurn);
 
         };
         if(whosTurn == 2){
             displayBattlingTeam(*Team2);
-            attackingPokemon = selectAttackedPokemon(Team2, whosTurn);
+            attackedPokemon = selectAttackedPokemon(Team1, whosTurn);
 
         };
+        
+        cout << "Select a Pokemon to attack " << attackedPokemon->name <<  endl;
+        Pokemon *attackingPokemon;
+        if(whosTurn == 1){
+            displayBattlingTeam(*Team1);
+            attackingPokemon = selectAttackingPokemon(Team1, whosTurn);
+
+        };
+        if(whosTurn == 2){
+            displayBattlingTeam(*Team2);
+            attackingPokemon = selectAttackingPokemon(Team2, whosTurn);
+
+        };
+
+        
 
 
 
@@ -620,6 +682,9 @@ class Battle{
     }
 
     void attack(Pokemon *attackedPokemon, Pokemon *attackingPokemon){
+        
+
+        
         //drawAttackGUI();
  
 
@@ -658,6 +723,7 @@ int main(){
     Jolteon jolteon;
 
     Plusle plusle;
+    Rockruff rockruff;
 
     assignTypeFeatures();
 
@@ -676,6 +742,7 @@ int main(){
 
     Team Hacilar = {"Hacilar"};
     Hacilar.addMember(plusle);
+    Hacilar.addMember(rockruff);
     Hacilar.displayMembers();
 
     eiscue.gainExp(1050);

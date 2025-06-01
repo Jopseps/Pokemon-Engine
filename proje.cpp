@@ -44,7 +44,7 @@ class Pokemon{
     float expGainMultiplier = 1;
     
     vector<string> type;
-   
+    vector<string> attackNames;
     
 
     
@@ -121,7 +121,7 @@ class Pokemon{
         cout << "Attack Power: " << attackPower << endl;
         
         if(type.size() > 1 && type[1] != ""){
-            cout << "Type: " << type[0] << " " << type[1] << endl;
+            cout << "Type: " << type[0] << ", " << type[1] << endl;
         }else if(type.size() > 0){
             cout << "Type: " << type[0] << endl;
         }else{
@@ -234,7 +234,6 @@ class Fire : public Pokemon{
     // Counters this Pokemon
     static vector<string> weaknesses;
     
-    string attackName = "Fire";
     virtual void fire(){
         cout << name << " breathed fire!" << endl;
     }
@@ -254,7 +253,6 @@ class Fighting : public virtual Pokemon{
     // Counters this Pokemon
     static vector<string> weaknesses;
 
-    string attackName = "Fight";
     virtual void fight(){
         cout << name << " showed its fighting skills!" << endl;
     }
@@ -272,7 +270,6 @@ class Water : public virtual Pokemon{
     // Counters this Pokemon
     static vector<string> weaknesses;
     
-    string attackName = "Spray";
     virtual void spray(){
         cout << name << " sprayed water!" << endl;
     }
@@ -290,7 +287,6 @@ class Ice : public virtual Pokemon{
     // Counters this Pokemon
     static vector<string> weaknesses;
     
-    string attackName = "Freeze";
     virtual void freeze(){
         cout << name << " rained a few snowflakes!" << endl;
     }
@@ -308,7 +304,6 @@ class Electric : public virtual Pokemon{
     // Counters this Pokemon
     static vector<string> weaknesses;
     
-    string attackName = "Electrocute";
     virtual void electrocute(){
         cout << name << " casually lighted a light bulb!" << endl;
     }
@@ -326,7 +321,6 @@ class Grass : public virtual Pokemon{
     // Counters this Pokemon
     static vector<string> weaknesses;
     
-    string attackName = "Ivy";
     virtual void ivy(){
         cout << name << " showed up a bunch of vines out of the grass!" << endl;
     }
@@ -344,7 +338,6 @@ class Rock : public virtual Pokemon{
     // Counters this Pokemon
     static vector<string> weaknesses;
     
-    string attackName = "Boulder";
     virtual void boulder(){
         cout << name << " pulled a bunch of rocks out of the ground!" << endl;
     }
@@ -362,7 +355,7 @@ class Steel : public virtual Pokemon{
     // Counters this Pokemon
     static vector<string> weaknesses;
 
-    string attackName = "Blade";
+    
         // Slice
     virtual void blade(){
         cout << name << " sliced an apple!" << endl;
@@ -454,6 +447,7 @@ class Kartana : public Grass, public Steel{
         maxHealth = health = 50;
         attackPower = 25;
         type.push_back("Steel");
+        type.push_back("Grass");
     }
 };
 
@@ -483,7 +477,8 @@ class Team{
             if(teamMemberCount != 0){
                 cout << "Members of "<< teamName << ":" << endl;
                 for(int i = 0; i < teamMemberCount; i++){
-                            cout << i + 1 << ". " << teamMembers[i]->name << "   " << teamMembers[i]->level << "   " << teamMembers[i]->exp << "/" << teamMembers[i]->levelUpThreshold << endl;
+                            cout << i + 1 << ". " << teamMembers[i]->name << "   " << teamMembers[i]->level << "   " << teamMembers[i]->exp << "/" << teamMembers[i]->levelUpThreshold;
+                            cout << "   " << teamMembers[i]->health << "/" <<teamMembers[i]->maxHealth << endl;
                         }
             }else cout << teamName << " doesn't have members yet" << endl;
         
@@ -710,55 +705,124 @@ class Battle{
 
     }
 
-    /*void selectAttackMove(const Pokemon *attackingPokemon){
-        int selectedMove = 1;
-        cout << "Select the attack type to attack" << endl;
 
+    void displayAttackMove(const Pokemon &attackedPokemon, const Pokemon &attackingPokemon){
         
-        if(size(attackingPokemon->type) > 1){
-            
-
-        }
-
-
-
-    }*/
-
-    void displayAttackMove(const Pokemon *attackedPokemon, const Pokemon *attackingPokemon){
-        cout << endl;
-
-
         int tempCharacterCount;
 
+        bool isStrong = false;
+        bool isWeak = false;
 
-        tempCharacterCount = characterBetweenTwo - CalculateStringLength(attackingPokemon->type[0]);
-        
-        if(attackingPokemon->type.size() > 1 && attackingPokemon->type[1] != ""){
 
-            tempCharacterCount = characterBetweenTwo - (CalculateStringLength(attackingPokemon->type[0]) + CalculateStringLength(attackingPokemon->type[1]));
+
+        if(attackingPokemon.attackNames.size() > 1 && attackingPokemon.attackNames[1] != ""){
+
+            tempCharacterCount = characterBetweenTwo - CalculateStringLength(attackingPokemon.attackNames[0]);
+
+            cout << attackingPokemon.attackNames[0];
+            for(int i = 0; i < tempCharacterCount; i++){
+            cout << " ";
+            }
+            cout << attackingPokemon.attackNames[1];
         
-        }else if(attackingPokemon->type.size() > 0){
-            tempCharacterCount = characterBetweenTwo - (CalculateStringLength(attackingPokemon->type[0]));
+        }else if(size(attackingPokemon.attackNames) > 0){
+            tempCharacterCount = characterBetweenTwo - (CalculateStringLength(attackingPokemon.attackNames[0]));
+
+            cout << attackingPokemon.attackNames[0];
+
         }else{
             tempCharacterCount = characterBetweenTwo;
         }
 
+        cout << endl;
 
-        for(int i = 0; i < tempCharacterCount; i++){
+        if(attackingPokemon.attackNames.size() > 1 && attackingPokemon.attackNames[1] != ""){
+
+            tempCharacterCount = characterBetweenTwo - CalculateStringLength(attackingPokemon.attackNames[0]);
+
+            cout << attackingPokemon.attackNames[0];
+            for(int i = 0; i < tempCharacterCount; i++){
             cout << " ";
+            }
+            cout << attackingPokemon.attackNames[1];
+        
+        }else if(size(attackingPokemon.attackNames) > 0){
+            tempCharacterCount = characterBetweenTwo - (CalculateStringLength(attackingPokemon.attackNames[0]));
+
+            cout << attackingPokemon.attackNames[0];
+
+        }else{
+            tempCharacterCount = characterBetweenTwo;
         }
-
-        
-
-        
 
         cout << endl;
 
     }
 
+
+
+    string selectAttackMove(const Pokemon &attackedPokemon, const Pokemon &attackingPokemon){
+        bool isMoveSelected = false;
+        int selectedMoveOrder = 1;
+        string selectedMove;
+        char pressedButton;
+        cout << "Select an Attack Move to attack " << attackedPokemon.name << "!" << endl << endl;
+
+        while(isMoveSelected == false){
+            displayAttackMove(attackedPokemon, attackingPokemon);
+            displayArrow(selectedMoveOrder);
+
+
+            pressedButton = '0';
+            pressedButton = getArrowKey(); 
+            if(pressedButton == 'd'){
+                if(selectedMoveOrder < size(attackingPokemon.attackNames)) selectedMoveOrder++;
+            }
+            if(pressedButton == 'a'){
+                if(selectedMoveOrder > 1) selectedMoveOrder--;
+            }
+            if(pressedButton == 'y' || pressedButton == 'Y'){
+                cout << "Attack Move selected | DEBUG" << endl;
+                    selectedMove = attackingPokemon.attackNames[selectedMoveOrder - 1];
+                    isMoveSelected = true;
+                    return selectedMove;
+            }
+            else if(pressedButton != 'a' && pressedButton != 'd' && pressedButton != 'y' && pressedButton != 'Y'){
+                cout << "Invalid button try again" << endl;
+            }
+
+        }
+    return "0";    
+    }
+
+    string convertAttackMove(string attackMove){
+        if(attackMove == "Fire"){
+            return "Fire";}
+        if(attackMove == "Fight"){
+            return "Fighting";}
+        if(attackMove == "Spray"){
+            return "Water";}
+        if(attackMove == "Freeze"){
+            return "Ice";}
+        if(attackMove == "Electrocute"){
+            return "Electric";}
+        if(attackMove == "Ivy"){
+            return "Grass";}
+        if(attackMove == "Boulder"){
+            return "Rock";}
+        if(attackMove == "Blade"){
+            return "Steel";}
+        else return "Nothing";
+    }
+
+    bool checkIfStrong(string attackingMoveType, Pokemon *attackedPokemon){
+        
+
+    }
+
     void drawAttackGUI(){
 
-        cout << "Select a Pokemon to attack"<<  endl;
+        cout << "Select a Pokemon to attack | DEBUG | drawAttackGUI "<<  endl;
         Pokemon *attackedPokemon;
         if(whosTurn == 1){
             displayBattlingTeam(*Team1);
@@ -771,7 +835,7 @@ class Battle{
 
         };
         
-        cout << "Select a Pokemon to attack " << attackedPokemon->name <<  endl;
+        cout << "Select a Pokemon to attack | DEBUG | drawAttackGUI " << attackedPokemon->name <<  endl;
         Pokemon *attackingPokemon;
         if(whosTurn == 1){
             displayBattlingTeam(*Team1);
@@ -791,21 +855,24 @@ class Battle{
     }
 
     void preAttack(Team *attackedTeam, Team *attackingTeam, int wT){
-        battleAttack(selectAttackedPokemon(attackedTeam, wT), selectAttackingPokemon(attackingTeam, wT));
+        Pokemon *attackedPokemon = selectAttackedPokemon(attackedTeam, wT);
+        Pokemon *attackingPokemon = selectAttackingPokemon(attackingTeam, wT);
+        string attackMove = selectAttackMove(*attackedPokemon, *attackingPokemon);
+        string attackType = convertAttackMove(attackMove);
+        battleAttack(attackedPokemon, attackingPokemon, attackType);
     }
 
-    void battleAttack(Pokemon *attackedPokemon, Pokemon *attackingPokemon){
+    void battleAttack(Pokemon *attackedPokemon, Pokemon *attackingPokemon, string attackType){
         
 
         
-        //drawAttackGUI();
  
 
 
     }
 
 
-    
+
 
 
 
@@ -823,6 +890,132 @@ void battle(Team &Team1, Team &Team2){
 
 
 }*/
+
+vector<string> convertStrenght(string wantedType){
+    vector<string> returnedStrenghts;
+    if(wantedType == "Fire"){
+        returnedStrenghts.push_back("Ice");
+        returnedStrenghts.push_back("Grass");
+        return returnedStrenghts;
+    }
+    if(wantedType == "Ice"){
+        returnedStrenghts.push_back("Dragon");
+        returnedStrenghts.push_back("Grass");
+        return returnedStrenghts;
+    }
+    if(wantedType == "Fighting"){
+        returnedStrenghts.push_back("Ice");
+        returnedStrenghts.push_back("Rock");
+        return returnedStrenghts;
+    }
+    if(wantedType == "Electric"){
+        returnedStrenghts.push_back("Water");
+        returnedStrenghts.push_back("Steel");
+        return returnedStrenghts;
+    }
+    if(wantedType == "Grass"){
+        returnedStrenghts.push_back("Water");
+        returnedStrenghts.push_back("Rock");
+        return returnedStrenghts;
+    }
+    if(wantedType == "Rock"){
+        returnedStrenghts.push_back("Fire");
+        returnedStrenghts.push_back("Ice");
+        return returnedStrenghts;
+    }
+    if(wantedType == "Steel"){
+        returnedStrenghts.push_back("Ice");
+        returnedStrenghts.push_back("Rock");
+        return returnedStrenghts;
+    }
+    else return;
+
+    /*Fire::strengths.push_back("Ice");
+    Fire::strengths.push_back("Grass");
+    Fire::weaknesses.push_back("Water");
+    Fire::weaknesses.push_back("Rock");
+
+    // ICE
+    Ice::strengths.push_back("Dragon");
+    Ice::strengths.push_back("Grass");
+    Ice::weaknesses.push_back("Fire");
+    Ice::weaknesses.push_back("Ice");
+
+    // FIGHTING
+    Fighting::strengths.push_back("Ice");
+    Fighting::strengths.push_back("Rock");
+    Fighting::weaknesses.push_back("Fairy");
+    Fighting::weaknesses.push_back("Water");
+
+    // ELECTRIC
+    Electric::strengths.push_back("Water");
+    Electric::strengths.push_back("Steel"); // Mana
+    Electric::weaknesses.push_back("Grass");
+    Electric::weaknesses.push_back("Electric");
+
+    // GRASS
+    Grass::strengths.push_back("Water");
+    Grass::strengths.push_back("Rock");
+    Grass::weaknesses.push_back("Grass");
+    Grass::weaknesses.push_back("Fire");
+    
+    // ROCK
+    Rock::strengths.push_back("Fire");
+    Rock::strengths.push_back("Ice");
+    Rock::weaknesses.push_back("Fighting");
+    Rock::weaknesses.push_back("Steel");
+
+    // STEEL
+    Steel::strengths.push_back("Ice");
+    Steel::strengths.push_back("Rock");
+    Steel::weaknesses.push_back("Electric");
+    Steel::weaknesses.push_back("Fire");
+    Steel::weaknesses.push_back("Water");*/
+
+
+
+
+}
+
+vector<string> convertWeakness(string wantedType){
+    vector<string> returnedWeaknesses;
+    if(wantedType == "Fire"){
+        returnedWeaknesses.push_back("Water");
+        returnedWeaknesses.push_back("Rock");
+        return returnedWeaknesses;
+    }
+    if(wantedType == "Ice"){
+        returnedWeaknesses.push_back("Fire");
+        returnedWeaknesses.push_back("Ice");
+        return returnedWeaknesses;
+    }
+    if(wantedType == "Fighting"){
+        returnedWeaknesses.push_back("Fairy");
+        returnedWeaknesses.push_back("Water");
+        return returnedWeaknesses;
+    }
+    if(wantedType == "Electric"){
+        returnedWeaknesses.push_back("Grass");
+        returnedWeaknesses.push_back("Electric");
+        return returnedWeaknesses;
+    }
+    if(wantedType == "Grass"){
+        returnedWeaknesses.push_back("Grass");
+        returnedWeaknesses.push_back("Fire");
+        return returnedWeaknesses;
+    }
+    if(wantedType == "Rock"){
+        returnedWeaknesses.push_back("Fighting");
+        returnedWeaknesses.push_back("Steel");
+        return returnedWeaknesses;
+    }
+    if(wantedType == "Steel"){
+        returnedWeaknesses.push_back("Fire");
+        returnedWeaknesses.push_back("Water");
+        return returnedWeaknesses;
+    }
+    else return;
+}
 
 vector<string> Fire::strengths;
 vector<string> Fire::weaknesses;
@@ -885,7 +1078,91 @@ void assignTypeFeatures(){
     Steel::weaknesses.push_back("Fire");
     Steel::weaknesses.push_back("Water");
 
+
+    for(int i = 0; i < size(allPokemons); i++){
+        allPokemons[i]->attackNames.clear();
+        if(size(allPokemons[i]->type) > 1){
+            if(allPokemons[i]->type[0] == "Fire"){
+            allPokemons[i]->attackNames.push_back("Fire");}
+
+            if(allPokemons[i]->type[0] == "Fighting"){
+            allPokemons[i]->attackNames.push_back("Fight");}
+
+            if(allPokemons[i]->type[0] == "Water"){
+            allPokemons[i]->attackNames.push_back("Spray");}
+
+            if(allPokemons[i]->type[0] == "Ice"){
+            allPokemons[i]->attackNames.push_back("Freeze");}
+
+            if(allPokemons[i]->type[0] == "Electric"){
+            allPokemons[i]->attackNames.push_back("Electrocute");}
+
+            if(allPokemons[i]->type[0] == "Grass"){
+            allPokemons[i]->attackNames.push_back("Ivy");}
+
+            if(allPokemons[i]->type[0] == "Rock"){
+            allPokemons[i]->attackNames.push_back("Boulder");}
+
+            if(allPokemons[i]->type[0] == "Steel"){
+            allPokemons[i]->attackNames.push_back("Blade");}
+
+            
+            if(allPokemons[i]->type[1] == "Fire"){
+            allPokemons[i]->attackNames.push_back("Fire");}
+
+            if(allPokemons[i]->type[1] == "Fighting"){
+            allPokemons[i]->attackNames.push_back("Fight");}
+
+            if(allPokemons[i]->type[1] == "Water"){
+            allPokemons[i]->attackNames.push_back("Spray");}
+
+            if(allPokemons[i]->type[1] == "Ice"){
+            allPokemons[i]->attackNames.push_back("Freeze");}
+
+            if(allPokemons[i]->type[1] == "Electric"){
+            allPokemons[i]->attackNames.push_back("Electrocute");}
+
+            if(allPokemons[i]->type[1] == "Grass"){
+            allPokemons[i]->attackNames.push_back("Ivy");}
+
+            if(allPokemons[i]->type[1] == "Rock"){
+            allPokemons[i]->attackNames.push_back("Boulder");}
+
+            if(allPokemons[i]->type[1] == "Steel"){
+            allPokemons[i]->attackNames.push_back("Blade");}
+            
+        }else if(size(allPokemons[i]->type) == 1){
+            if(allPokemons[i]->type[0] == "Fire"){
+            allPokemons[i]->attackNames.push_back("Fire");}
+
+            if(allPokemons[i]->type[0] == "Fighting"){
+            allPokemons[i]->attackNames.push_back("Fight");}
+
+            if(allPokemons[i]->type[0] == "Water"){
+            allPokemons[i]->attackNames.push_back("Spray");}
+
+            if(allPokemons[i]->type[0] == "Ice"){
+            allPokemons[i]->attackNames.push_back("Freeze");}
+
+            if(allPokemons[i]->type[0] == "Electric"){
+            allPokemons[i]->attackNames.push_back("Electrocute");}
+
+            if(allPokemons[i]->type[0] == "Grass"){
+            allPokemons[i]->attackNames.push_back("Ivy");}
+
+            if(allPokemons[i]->type[0] == "Rock"){
+            allPokemons[i]->attackNames.push_back("Boulder");}
+
+            if(allPokemons[i]->type[0] == "Steel"){
+            allPokemons[i]->attackNames.push_back("Blade");}
+
+        }
+
+    }
+
 }
+
+
 
 
 
@@ -906,6 +1183,7 @@ int main(){
     assignTypeFeatures();
 
     eiscue.pokedex();
+    kartana.pokedex();
 
     Team OGLER = {"OGLER"};
 
@@ -930,12 +1208,18 @@ int main(){
     OGLER.displayMembers();
 
     kartana.blade();
-    kartana.blade(charizard);
+    kartana.blade(rockruff);
 
     Battle Battle1;
     Battle1.addTeam(&OGLER, 1);
     Battle1.addTeam(&Hacilar, 2);
     Battle1.updateRound();
+    Battle1.displayAttackMove(charizard, kartana);
+    Battle1.selectAttackMove(charizard, kartana);
+    Battle1.selectAttackMove(kartana, charizard);
+    OGLER.displayMembers();
+    Hacilar.displayMembers();
+
 }
 
 

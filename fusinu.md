@@ -16,3 +16,9 @@ charizard          eiscue
 50/100             100/100
 
 displayTeam ve displayArrow ayrı zubudu
+
+strenghts ve zayıflıklar
+
+attack typın strenght ve zayıflığı olcak
+strenghti sadece asıl typea etki edecek
+aynı şekilde zayıflığı da

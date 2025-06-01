@@ -199,7 +199,7 @@ class Pokemon{
         }
     }
 
-    int damage(Pokemon &attackedPokemon, int dmg){
+    int basicDamage(Pokemon &attackedPokemon, int dmg){
         if(attackedPokemon.health <= dmg){
             attackedPokemon.health = 0;
             cout << attackedPokemon.name << " is fainted" << endl;
@@ -215,8 +215,9 @@ class Pokemon{
     }
                                         // This types strenghts and weaknesses
     void attack(Pokemon &attackedPokemon, vector<string> s, vector<string> w){
-        gainExp(damage(attackedPokemon, calculateDamage(attackedPokemon, s, w))) ;
+        gainExp(basicDamage(attackedPokemon, calculateDamage(attackedPokemon, s, w))) ;
     }
+
 };
 
 int Pokemon::PokemonCount = 0;
@@ -815,11 +816,29 @@ class Battle{
         else return "Nothing";
     }
 
-    bool checkIfStrong(string attackingMoveType, Pokemon *attackedPokemon){
-        
-
+    bool checkIfStrong(string attackType, Pokemon *attackedPokemon){
+        for(int i = 0; i < size(attackedPokemon->type); i++){
+            for(int j = 0; j < size(attackedPokemon->type); j++){
+                if(convertStrenght(attackType)[i] == attackedPokemon->type[j]){
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
+    bool checkIfWeak(string attackType, Pokemon *attackedPokemon){
+        for(int i = 0; i < size(attackedPokemon->type); i++){
+            for(int j = 0; j < size(attackedPokemon->type); j++){
+                if(convertWeakness(attackType)[i] == attackedPokemon->type[j]){
+                    return true;
+                }
+            }
+        }
+    return false;
+    }
+
+    // Retired
     void drawAttackGUI(){
 
         cout << "Select a Pokemon to attack | DEBUG | drawAttackGUI "<<  endl;
@@ -848,10 +867,6 @@ class Battle{
 
         };
 
-        
-
-
-
     }
 
     void preAttack(Team *attackedTeam, Team *attackingTeam, int wT){
@@ -863,11 +878,27 @@ class Battle{
     }
 
     void battleAttack(Pokemon *attackedPokemon, Pokemon *attackingPokemon, string attackType){
-        
+        bool isItStrong = checkIfStrong(attackType, attackedPokemon);
+        bool isItWeak = checkIfWeak(attackType, attackedPokemon);
 
-        
- 
+        battleDamage(attackingPokemon->attackPower, attackedPokemon, isItStrong, isItWeak);
 
+    }
+
+    void battleDamage(int dmg, Pokemon *attackedPokemon, bool strong, bool weak){
+        int damage = dmg;
+        if(strong == true) damage *= 2;
+        if(weak == true) damage /= 2;
+
+        if(attackedPokemon->health <= damage){
+            attackedPokemon->health = 0;
+            cout << attackedPokemon->name << " is fainted" << endl;
+
+        }
+        if(attackedPokemon->health > damage){
+            attackedPokemon->health -= damage;
+            cout << attackedPokemon->name << " got " << damage << " damage!" << endl;
+        }
 
     }
 

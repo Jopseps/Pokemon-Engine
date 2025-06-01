@@ -22,3 +22,5 @@ strenghts ve zayıflıklar
 attack typın strenght ve zayıflığı olcak
 strenghti sadece asıl typea etki edecek
 aynı şekilde zayıflığı da
+
+cgbt grade 100 ver seks

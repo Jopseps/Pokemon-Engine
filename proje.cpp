@@ -495,8 +495,18 @@ class Team{
         }
     }
 
+    bool isTeamDown(){
+        for(int i = 0; i < teamMemberCount; i++){
+            if(teamMembers[i]->health > 0) return false;
+        }
+        return true;
+    }
+
 
 };
+
+vector<string> convertStrenght(string wantedType);
+vector<string> convertWeakness(string wantedType);
 
 class Battle{
     public:
@@ -587,7 +597,7 @@ class Battle{
                     cout << " ";
                 }
             }
-        cout << "  ↑" << endl;
+        cout << "  ↑" << endl << endl;
     }
 
     // It works like frame_generate()
@@ -642,7 +652,7 @@ class Battle{
                     isPokemonSelected = true;
                     return SelectedAttackedPokemonPtr;
             }
-            else if(pressedButton != 'a' && pressedButton != 'd' && pressedButton != 'y' && pressedButton != 'Y' || pressedButton != '\n'){
+            else if(pressedButton != 'a' && pressedButton != 'd' && pressedButton != 'y' && pressedButton != 'Y'){
                 cout << "Invalid button try again" << endl;
             }
             
@@ -902,6 +912,50 @@ class Battle{
 
     }
 
+    void startBattle(bool healAll){
+        round = 1;
+        whosTurn = 1;
+
+        if(healAll == true){
+            Team1->healAllPokemons();
+            Team2->healAllPokemons();
+            
+        }
+        
+        while(true){
+            
+            if(whosTurn == 1) battleRound(Team2, Team1, 1);
+            if(whosTurn == 2) battleRound(Team1, Team2, 2);
+
+            if(Team2->isTeamDown() == true){
+                cout << endl << Team1->teamName << " won the battle!" << endl << endl;
+            }
+            if(Team1->isTeamDown() == true){
+                cout << endl << Team2->teamName << " won the battle!" << endl << endl;
+            }
+
+            if(whosTurn == 1) whosTurn = 2;
+            else if(whosTurn == 2) whosTurn = 1;
+
+            round++;
+
+
+
+        }
+        
+
+
+
+
+
+
+    }
+
+    void battleRound(Team *attackedTeam, Team *attackingTeam, int wT){
+        cout << endl << "Round " << round << endl;
+        cout << attackingTeam->teamName << "'s turn!" << endl << endl;
+        preAttack(attackedTeam, attackingTeam, wT);
+    }
 
 
 
@@ -959,7 +1013,7 @@ vector<string> convertStrenght(string wantedType){
         returnedStrenghts.push_back("Rock");
         return returnedStrenghts;
     }
-    else return;
+    else return returnedStrenghts;
 
     /*Fire::strengths.push_back("Ice");
     Fire::strengths.push_back("Grass");
@@ -1045,7 +1099,7 @@ vector<string> convertWeakness(string wantedType){
         returnedWeaknesses.push_back("Water");
         return returnedWeaknesses;
     }
-    else return;
+    else return returnedWeaknesses;
 }
 
 vector<string> Fire::strengths;
@@ -1244,13 +1298,17 @@ int main(){
     Battle Battle1;
     Battle1.addTeam(&OGLER, 1);
     Battle1.addTeam(&Hacilar, 2);
-    Battle1.updateRound();
+    /*Battle1.updateRound();
     Battle1.displayAttackMove(charizard, kartana);
     Battle1.selectAttackMove(charizard, kartana);
     Battle1.selectAttackMove(kartana, charizard);
     OGLER.displayMembers();
     Hacilar.displayMembers();
+    Battle1.preAttack(Battle1.Team1, Battle1.Team2, 1);
+    OGLER.displayMembers();
+    Hacilar.displayMembers();*/
 
+    Battle1.startBattle(true);
 }
 
 

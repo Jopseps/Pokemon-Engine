@@ -28,6 +28,8 @@ class Trainer{
 
 
 vector<Pokemon*> allPokemons;
+vector<string> convertStrenght(string wantedType);
+vector<string> convertWeakness(string wantedType);
 
 class Pokemon{
     public:
@@ -131,32 +133,83 @@ class Pokemon{
         cout << "Level: " << level << endl;
         cout << "Experience: " << exp << "/" << levelUpThreshold << "\n" << endl;
         
-        /*
-        cout << "Strong against: "; 
         
-        if(size(strengths) >= 1){
-            for(int i = 0; i < size(strengths); i++){
-                cout << strengths[i];
-                if(i != size(strengths)) cout << ", ";
+        cout << "Strong against: "; 
+
+        if(size(type) > 1 && !type[1].empty()){
+
+            for(int i = 0; i < size(convertStrenght(type[0])); i++){
+                cout << convertStrenght(type[0])[i];
+                if(i != size(convertStrenght(type[0])) - 1) cout << ", ";
             }
+            cout << "; ";
+            for(int i = 0; i < size(convertStrenght(type[1])); i++){
+                cout << convertStrenght(type[1])[i];
+                if(i != size(convertStrenght(type[1])) - 1) cout << ", ";
+            }
+            
             cout << endl;
         }
-            else{cout << "This Pokemon isn't strong against any type" << endl;}
+        else if(size(type) == 1){
+            
+            for(int i = 0; i < size(convertStrenght(type[0])); i++){
+                cout << convertStrenght(type[0])[i];
+                if(i != size(type)) cout << ", ";
+            }
+            
+            cout << endl;
+        }
+        else{cout << "This Pokemon isn't strong against any type" << endl;}
+
+
+    
+
 
         cout << "Weak against: "; 
         
-        if(size(weaknesses) >= 1){
-            for(int i = 0; i < size(weaknesses); i++){
-                cout << weaknesses[i];
-                if(i != size(weaknesses)) cout << ", ";
+        if(size(type) > 1 && !type[1].empty()){
+
+            for(int i = 0; i < size(convertWeakness(type[0])); i++){
+                cout << convertWeakness(type[0])[i];
+                if(i != size(convertWeakness(type[0])) - 1) cout << ", ";
             }
+            cout << "; ";
+            for(int i = 0; i < size(convertWeakness(type[1])); i++){
+                cout << convertWeakness(type[1])[i];
+                if(i != size(convertWeakness(type[1])) - 1) cout << ", ";
+            }
+            
             cout << endl;
         }
-            else{cout << "This Pokemon isn't weak against any type" << endl;}
+        else if(size(type) == 1){
+            
+            for(int i = 0; i < size(convertWeakness(type[0])); i++){
+                cout << convertWeakness(type[0])[i];
+                if(i != size(type)) cout << ", ";
+            }
+            
+            cout << endl;
+        }
+        else{cout << "This Pokemon isn't weak against any type" << endl;}
+        
+        /*if(attackingPokemon->attackNames.size() > 1 && !attackingPokemon->attackNames[1].empty()){
 
-        for(int i = 1; i <= 29; i++) cout << "-"; cout << endl << endl;
-        */
+            tempCharacterCount = characterBetweenTwo - CalculateStringLength(attackingPokemon->attackNames[0]);
 
+            cout << attackingPokemon->attackNames[0];
+            for(int i = 0; i < tempCharacterCount; i++){
+            cout << " ";
+            }
+            cout << attackingPokemon->attackNames[1];
+        
+        }else if(size(attackingPokemon->attackNames) > 0){
+            tempCharacterCount = characterBetweenTwo - (CalculateStringLength(attackingPokemon->attackNames[0]));
+
+            cout << attackingPokemon->attackNames[0];
+
+        }else{
+            tempCharacterCount = characterBetweenTwo;
+        }*/
     }
 
     // Can be merged Birleştirilebilir mana
@@ -197,6 +250,7 @@ class Pokemon{
 
         return damage;
         }
+    return damage;
     }
 
     int basicDamage(Pokemon &attackedPokemon, int dmg){
@@ -569,11 +623,12 @@ class Battle{
             tempCharacterCount = characterBetweenTwo - CalculateStringLength(currentTeam.teamMembers[i]->type[0]);
             
             if(currentTeam.teamMembers[i]->type.size() > 1 && currentTeam.teamMembers[i]->type[1] != ""){
-
-            tempCharacterCount = characterBetweenTwo - (CalculateStringLength(currentTeam.teamMembers[i]->type[0]) + CalculateStringLength(currentTeam.teamMembers[i]->type[1]));
+            tempCharacterCount = characterBetweenTwo - (CalculateStringLength(currentTeam.teamMembers[i]->type[0]) + CalculateStringLength(currentTeam.teamMembers[i]->type[1]) + 2);
+            cout << currentTeam.teamMembers[i]->type[0] << ", " << currentTeam.teamMembers[i]->type[1];
             
             }else if(currentTeam.teamMembers[i]->type.size() > 0){
                 tempCharacterCount = characterBetweenTwo - (CalculateStringLength(currentTeam.teamMembers[i]->type[0]));
+                cout << currentTeam.teamMembers[i]->type[0];
             }else{
                 tempCharacterCount = characterBetweenTwo;
             }
@@ -612,9 +667,10 @@ class Battle{
         }
     }
 
+    // Retired
     void updateRound(){
-        drawAttackGUI();
-        
+        // drawAttackGUI();
+
 
 
     }
@@ -624,11 +680,11 @@ class Battle{
         bool isPokemonSelected = false;
         char pressedButton = '0';
         Pokemon *SelectedAttackedPokemonPtr = nullptr;
-        cout << "Hello" << endl;
         while(isPokemonSelected == false){
-            cout << "DEBUG | selectedPokemon = " << selectedPokemon << endl;
-            cout << "DEBUG | size(attackedTeam->teamMembers) = " << size(attackedTeam->teamMembers) << endl;
-            cout << "DEBUG | attackedTeam->teamName = " << attackedTeam->teamName << endl;
+            cout << endl << "Select a pokemon to attack" << endl;
+            // cout << "DEBUG | selectedPokemon = " << selectedPokemon << endl;
+            // cout << "DEBUG | size(attackedTeam->teamMembers) = " << size(attackedTeam->teamMembers) << endl;
+            // cout << "DEBUG | attackedTeam->teamName = " << attackedTeam->teamName << endl;
             if(whosTurn == 1){
             updateBattleArena(*Team1, true);
             updateBattleArena(*Team2, false);
@@ -647,29 +703,46 @@ class Battle{
                 if(selectedPokemon > 1) selectedPokemon--;
             }
             else if(pressedButton == 'y' || pressedButton == 'Y'){
-                cout << "Pokemon selected | DEBUG" << endl;
+                // cout << "Pokemon selected | DEBUG" << endl;
                     SelectedAttackedPokemonPtr = attackedTeam->teamMembers[selectedPokemon - 1];
                     isPokemonSelected = true;
+
+                    while((pressedButton = getchar()) != '\n' && pressedButton != EOF){
+                        continue;
+                    }
+
                     return SelectedAttackedPokemonPtr;
             }
             else if(pressedButton != 'a' && pressedButton != 'd' && pressedButton != 'y' && pressedButton != 'Y'){
                 cout << "Invalid button try again" << endl;
+                /*if(pressedButton == '\n'){
+                    getchar();
+                    pressedButton = '0';
+                }*/
                 pressedButton = '0';
+                
             }
-            getchar();
+            while((pressedButton = getchar()) != '\n' && pressedButton != EOF){
+                continue;
+            }
+
+            
+
+            //getchar();
+            
             
 
         }
     return nullptr;
     }
 
-    Pokemon *selectAttackingPokemon(Team *attackingTeam, int wT){
+    Pokemon *selectAttackingPokemon(Team *attackingTeam, Pokemon *attackedPokemon, int wT){
         selectedPokemon = 1;
         bool isPokemonSelected = false;
         char pressedButton = '0';
         Pokemon *SelectedAttackingPokemonPtr = nullptr;
-        cout << "Hello" << endl;
         while(isPokemonSelected == false){
+            cout << endl << "Select a pokemon to attack " << attackedPokemon->name << endl;
             if(whosTurn == 1){
             updateBattleArena(*Team1, false);
             updateBattleArena(*Team2, true);
@@ -688,15 +761,25 @@ class Battle{
                 if(selectedPokemon > 1) selectedPokemon--;
             }
             if(pressedButton == 'y' || pressedButton == 'Y'){
-                cout << "Pokemon selected | DEBUG" << endl;
-                    SelectedAttackingPokemonPtr = attackingTeam->teamMembers[selectedPokemon - 1];
-                    isPokemonSelected = true;
-                    return SelectedAttackingPokemonPtr;
+                // cout << "Pokemon selected | DEBUG" << endl;
+                SelectedAttackingPokemonPtr = attackingTeam->teamMembers[selectedPokemon - 1];
+                isPokemonSelected = true;
+
+                while((pressedButton = getchar()) != '\n' && pressedButton != EOF){
+                    continue;
+                }
+
+                return SelectedAttackingPokemonPtr;
             }
             else if(pressedButton != 'a' && pressedButton != 'd' && pressedButton != 'y' && pressedButton != 'Y'){
                 cout << "Invalid button try again" << endl;
+                pressedButton = '0';
             }
-             
+            while((pressedButton = getchar()) != '\n' && pressedButton != EOF){
+                continue;
+            }
+
+
 
         }
     return nullptr;
@@ -719,7 +802,7 @@ class Battle{
     }
 
 
-    void displayAttackMove(const Pokemon &attackedPokemon, const Pokemon &attackingPokemon){
+    void displayAttackMove(const Pokemon *attackedPokemon, const Pokemon *attackingPokemon){
         
         int tempCharacterCount;
 
@@ -728,20 +811,20 @@ class Battle{
 
 
 
-        if(attackingPokemon.attackNames.size() > 1 && attackingPokemon.attackNames[1] != ""){
+        if(attackingPokemon->attackNames.size() > 1 && !attackingPokemon->attackNames[1].empty()){
 
-            tempCharacterCount = characterBetweenTwo - CalculateStringLength(attackingPokemon.attackNames[0]);
+            tempCharacterCount = characterBetweenTwo - CalculateStringLength(attackingPokemon->attackNames[0]);
 
-            cout << attackingPokemon.attackNames[0];
+            cout << attackingPokemon->attackNames[0];
             for(int i = 0; i < tempCharacterCount; i++){
             cout << " ";
             }
-            cout << attackingPokemon.attackNames[1];
+            cout << attackingPokemon->attackNames[1];
         
-        }else if(size(attackingPokemon.attackNames) > 0){
-            tempCharacterCount = characterBetweenTwo - (CalculateStringLength(attackingPokemon.attackNames[0]));
+        }else if(size(attackingPokemon->attackNames) > 0){
+            tempCharacterCount = characterBetweenTwo - (CalculateStringLength(attackingPokemon->attackNames[0]));
 
-            cout << attackingPokemon.attackNames[0];
+            cout << attackingPokemon->attackNames[0];
 
         }else{
             tempCharacterCount = characterBetweenTwo;
@@ -749,20 +832,57 @@ class Battle{
 
         cout << endl;
 
-        if(attackingPokemon.attackNames.size() > 1 && attackingPokemon.attackNames[1] != ""){
+        if(attackingPokemon->attackNames.size() > 1 && !attackingPokemon->attackNames[1].empty()){
+            if(checkIfStrong(attackingPokemon->attackNames[0], attackedPokemon)){
+                tempCharacterCount = characterBetweenTwo - CalculateStringLength("Strong");
+                cout << "Strong";
 
-            tempCharacterCount = characterBetweenTwo - CalculateStringLength(attackingPokemon.attackNames[0]);
 
-            cout << attackingPokemon.attackNames[0];
+            }else if(checkIfWeak(attackingPokemon->attackNames[0], attackedPokemon)){
+                tempCharacterCount = characterBetweenTwo - CalculateStringLength("Weak");
+                cout << "Weak";
+
+
+            }else{
+                tempCharacterCount = characterBetweenTwo - CalculateStringLength("Normal");
+                cout << "Normal";
+            }
+            
             for(int i = 0; i < tempCharacterCount; i++){
             cout << " ";
             }
-            cout << attackingPokemon.attackNames[1];
-        
-        }else if(size(attackingPokemon.attackNames) > 0){
-            tempCharacterCount = characterBetweenTwo - (CalculateStringLength(attackingPokemon.attackNames[0]));
 
-            cout << attackingPokemon.attackNames[0];
+            if(checkIfStrong(attackingPokemon->attackNames[1], attackedPokemon)){
+                tempCharacterCount = characterBetweenTwo - CalculateStringLength("Strong");
+                cout << "Strong";
+
+
+            }else if(checkIfWeak(attackingPokemon->attackNames[1], attackedPokemon)){
+                tempCharacterCount = characterBetweenTwo - CalculateStringLength("Weak");
+                cout << "Weak";
+
+
+            }else{
+                tempCharacterCount = characterBetweenTwo - CalculateStringLength("Normal");
+                cout << "Normal";
+            }
+        
+        }else if(size(attackingPokemon->attackNames) > 0 && !attackingPokemon->attackNames[0].empty()){
+            // tempCharacterCount = characterBetweenTwo - (CalculateStringLength(attackingPokemon->attackNames[0]));
+            if(checkIfStrong(attackingPokemon->attackNames[0], attackedPokemon)){
+                tempCharacterCount = characterBetweenTwo - CalculateStringLength("Strong");
+                cout << "Strong";
+
+
+            }else if(checkIfWeak(attackingPokemon->attackNames[0], attackedPokemon)){
+                tempCharacterCount = characterBetweenTwo - CalculateStringLength("Weak");
+                cout << "Weak";
+
+
+            }else{
+                tempCharacterCount = characterBetweenTwo - CalculateStringLength("Normal");
+                cout << "Normal";
+            }
 
         }else{
             tempCharacterCount = characterBetweenTwo;
@@ -782,7 +902,7 @@ class Battle{
         cout << "Select an Attack Move to attack " << attackedPokemon.name << "!" << endl << endl;
 
         while(isMoveSelected == false){
-            displayAttackMove(attackedPokemon, attackingPokemon);
+            displayAttackMove(&attackedPokemon, &attackingPokemon);
             displayArrow(selectedMoveOrder);
 
 
@@ -795,13 +915,22 @@ class Battle{
                 if(selectedMoveOrder > 1) selectedMoveOrder--;
             }
             if(pressedButton == 'y' || pressedButton == 'Y'){
-                cout << "Attack Move selected | DEBUG" << endl;
+                // cout << "Attack Move selected | DEBUG" << endl;
                     selectedMove = attackingPokemon.attackNames[selectedMoveOrder - 1];
                     isMoveSelected = true;
+                    
+                    while((pressedButton = getchar()) != '\n' && pressedButton != EOF){
+                        continue;
+                    }
+
                     return selectedMove;
             }
             else if(pressedButton != 'a' && pressedButton != 'd' && pressedButton != 'y' && pressedButton != 'Y'){
                 cout << "Invalid button try again" << endl;
+                pressedButton = '0';
+            }
+            while((pressedButton = getchar()) != '\n' && pressedButton != EOF){
+                continue;
             }
 
         }
@@ -828,8 +957,22 @@ class Battle{
         else return "Nothing";
     }
 
-    bool checkIfStrong(string attackType, Pokemon *attackedPokemon){
-        for(int i = 0; i < size(attackedPokemon->type); i++){
+    /*
+        FIGHTING
+
+
+    
+    
+    */
+
+
+    
+
+
+
+    bool checkIfStrong(string attackType, const Pokemon *attackedPokemon){
+        cout << "Hi Herbert" << endl;
+        for(int i = 0; i < size(convertStrenght(attackType)); i++){
             for(int j = 0; j < size(attackedPokemon->type); j++){
                 if(convertStrenght(attackType)[i] == attackedPokemon->type[j]){
                     return true;
@@ -839,8 +982,9 @@ class Battle{
         return false;
     }
 
-    bool checkIfWeak(string attackType, Pokemon *attackedPokemon){
-        for(int i = 0; i < size(attackedPokemon->type); i++){
+    bool checkIfWeak(string attackType, const Pokemon *attackedPokemon){
+        cout << "Hi Herbert" << endl;
+        for(int i = 0; i < size(convertWeakness(attackType)); i++){
             for(int j = 0; j < size(attackedPokemon->type); j++){
                 if(convertWeakness(attackType)[i] == attackedPokemon->type[j]){
                     return true;
@@ -851,9 +995,9 @@ class Battle{
     }
 
     // Retired
-    void drawAttackGUI(){
+    /*void drawAttackGUI(){
 
-        cout << "Select a Pokemon to attack | DEBUG | drawAttackGUI "<<  endl;
+        cout << endl <<"Select a Pokemon to attack "<< endl;
         Pokemon *attackedPokemon;
         if(whosTurn == 1){
             displayBattlingTeam(*Team1);
@@ -866,7 +1010,7 @@ class Battle{
 
         };
         
-        cout << "Select a Pokemon to attack | DEBUG | drawAttackGUI " << attackedPokemon->name <<  endl;
+        cout << endl << "Select a Pokemon to attack " << attackedPokemon->name << endl;
         Pokemon *attackingPokemon;
         if(whosTurn == 1){
             displayBattlingTeam(*Team1);
@@ -879,11 +1023,11 @@ class Battle{
 
         };
 
-    }
+    }*/
 
     void preAttack(Team *attackedTeam, Team *attackingTeam, int wT){
         Pokemon *attackedPokemon = selectAttackedPokemon(attackedTeam, wT);
-        Pokemon *attackingPokemon = selectAttackingPokemon(attackingTeam, wT);
+        Pokemon *attackingPokemon = selectAttackingPokemon(attackingTeam, attackedPokemon, wT);
         string attackMove = selectAttackMove(*attackedPokemon, *attackingPokemon);
         string attackType = convertAttackMove(attackMove);
         battleAttack(attackedPokemon, attackingPokemon, attackType);
@@ -916,7 +1060,7 @@ class Battle{
 
     void startBattle(bool healAll){
         round = 1;
-        whosTurn = 1;
+        whosTurn = 2;
 
         if(healAll == true){
             Team1->healAllPokemons();
@@ -954,8 +1098,10 @@ class Battle{
     }
 
     void battleRound(Team *attackedTeam, Team *attackingTeam, int wT){
-        cout << endl << "Round " << round << endl;
-        cout << attackingTeam->teamName << "'s turn!" << endl << endl;
+        cout << endl << "*-----------------------*" << endl;
+        cout << "     Round " << round << endl;
+        cout << "     " << attackingTeam->teamName << "'s turn!" << endl;
+        cout << "*-----------------------*" << endl;
         preAttack(attackedTeam, attackingTeam, wT);
     }
 

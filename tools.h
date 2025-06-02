@@ -10,27 +10,27 @@ int CalculateStringLength(int a){
     return stringBuffer.length();
 }
 char getArrowKey(){
-    cout << "getArrowKey function called | DEBUG" << endl;
+    // cout << "getArrowKey function called | DEBUG" << endl;
     int ch = getchar();
     if(ch == 27){ // if the first value is ESC (ASCII 27)
         getchar(); // skip the [
         int value = getchar();
-        cout << "DEBUG | Entered value is: " << value << endl;
+        // cout << "DEBUG | Entered value is: " << value << endl;
         switch(value) { // compare to ASCII codes
             case 65: // 'A'
-                cout << "Up" << endl;
+                // cout << "Up" << endl;
                 return 'w';
             case 66: // 'B'
-                cout << "Down" << endl;
+                // cout << "Down" << endl;
                 return 's';
             case 67: // 'C'
-                cout << "Right" << endl;
+                // cout << "Right" << endl;
                 return 'd';
             case 68: // 'D'
-                cout << "Left" << endl;
+                // cout << "Left" << endl;
                 return 'a';
             default:
-                cout << "Unknown key" << endl;
+                // cout << "Unknown key" << endl;
                 return (char)value;
         }
     }

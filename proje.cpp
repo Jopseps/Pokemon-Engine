@@ -652,7 +652,7 @@ class Battle{
                     cout << " ";
                 }
             }
-        cout << "  ↑" << endl << endl;
+        cout << "  ↑" << endl;
     }
 
     // It works like frame_generate()
@@ -687,11 +687,15 @@ class Battle{
             // cout << "DEBUG | attackedTeam->teamName = " << attackedTeam->teamName << endl;
             if(whosTurn == 1){
             updateBattleArena(*Team1, true);
+            cout << endl;
+            cout << endl;
             updateBattleArena(*Team2, false);
             }
             else if(whosTurn == 2){
             updateBattleArena(*Team1, false);
+            cout << endl;
             updateBattleArena(*Team2, true);
+            cout << endl;
             }   
             
             pressedButton = '0';
@@ -745,15 +749,19 @@ class Battle{
             cout << endl << "Select a pokemon to attack " << attackedPokemon->name << endl;
             if(whosTurn == 1){
             updateBattleArena(*Team1, false);
+            cout << endl;
+            cout << endl;
             updateBattleArena(*Team2, true);
             }
             if(whosTurn == 2){
             updateBattleArena(*Team1, true);
+            cout << endl;
+            cout << endl;
             updateBattleArena(*Team2, false);
-            }  
+            }
 
             pressedButton = '0';
-            pressedButton = getArrowKey(); 
+            pressedButton = getArrowKey();
             if(pressedButton == 'd'){
                 if(selectedPokemon < size(attackingTeam->teamMembers)) selectedPokemon++;
             }
@@ -971,7 +979,6 @@ class Battle{
 
 
     bool checkIfStrong(string attackType, const Pokemon *attackedPokemon){
-        cout << "Hi Herbert" << endl;
         for(int i = 0; i < size(convertStrenght(attackType)); i++){
             for(int j = 0; j < size(attackedPokemon->type); j++){
                 if(convertStrenght(attackType)[i] == attackedPokemon->type[j]){
@@ -983,7 +990,6 @@ class Battle{
     }
 
     bool checkIfWeak(string attackType, const Pokemon *attackedPokemon){
-        cout << "Hi Herbert" << endl;
         for(int i = 0; i < size(convertWeakness(attackType)); i++){
             for(int j = 0; j < size(attackedPokemon->type); j++){
                 if(convertWeakness(attackType)[i] == attackedPokemon->type[j]){

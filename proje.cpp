@@ -102,7 +102,7 @@ class Pokemon{
         while(exp >= levelUpThreshold){
             level++;
             exp -= levelUpThreshold;
-            levelUpThreshold =  solidLevelUpThreshold * pow(level, 2/3);
+            levelUpThreshold =  (int)(solidLevelUpThreshold * ((pow(level, 4/3) * level / 2) * 3/4));
         }
     }
 
@@ -192,24 +192,7 @@ class Pokemon{
         }
         else{cout << "This Pokemon isn't weak against any type" << endl;}
         
-        /*if(attackingPokemon->attackNames.size() > 1 && !attackingPokemon->attackNames[1].empty()){
 
-            tempCharacterCount = characterBetweenTwo - CalculateStringLength(attackingPokemon->attackNames[0]);
-
-            cout << attackingPokemon->attackNames[0];
-            for(int i = 0; i < tempCharacterCount; i++){
-            cout << " ";
-            }
-            cout << attackingPokemon->attackNames[1];
-        
-        }else if(size(attackingPokemon->attackNames) > 0){
-            tempCharacterCount = characterBetweenTwo - (CalculateStringLength(attackingPokemon->attackNames[0]));
-
-            cout << attackingPokemon->attackNames[0];
-
-        }else{
-            tempCharacterCount = characterBetweenTwo;
-        }*/
     }
 
     // Can be merged Birleştirilebilir mana
@@ -433,13 +416,14 @@ class Charizard : public Fire{
     }
 };
 
-class Machamp : public Fighting{
+class Crabominable : public Fighting, public Ice{
     public:
-    Machamp(){
-        name = "Machamp";
-        maxHealth = health = 96;
-        attackPower = 11;
+    Crabominable(){
+        name = "Crabominalble";
+        maxHealth = health = 70;
+        attackPower = 14;
         type.push_back("Fighting");
+        type.push_back("Ice");
     }
 };
 
@@ -668,12 +652,12 @@ class Battle{
     }
 
     // Retired
-    void updateRound(){
+    /*void updateRound(){
         // drawAttackGUI();
 
 
 
-    }
+    }*/
                                                     // Who's turn
     Pokemon *selectAttackedPokemon(Team *attackedTeam, int wT){
         selectedPokemon = 1;
@@ -750,8 +734,8 @@ class Battle{
             if(whosTurn == 1){
             updateBattleArena(*Team1, false);
             cout << endl;
-            cout << endl;
             updateBattleArena(*Team2, true);
+            cout << endl;
             }
             if(whosTurn == 2){
             updateBattleArena(*Team1, true);
@@ -770,14 +754,25 @@ class Battle{
             }
             if(pressedButton == 'y' || pressedButton == 'Y'){
                 // cout << "Pokemon selected | DEBUG" << endl;
-                SelectedAttackingPokemonPtr = attackingTeam->teamMembers[selectedPokemon - 1];
-                isPokemonSelected = true;
+                if(attackingTeam->teamMembers[selectedPokemon - 1]->health == 0){
+                    cout << "This Pokemon is fainted" << endl; 
 
-                while((pressedButton = getchar()) != '\n' && pressedButton != EOF){
-                    continue;
-                }
+                    while((pressedButton = getchar()) != '\n' && pressedButton != EOF){
+                        continue;
+                    }
+                }else{
+                    SelectedAttackingPokemonPtr = attackingTeam->teamMembers[selectedPokemon - 1];
+                    isPokemonSelected = true;
+                    
+                    while((pressedButton = getchar()) != '\n' && pressedButton != EOF){
+                        continue;
+                    }
 
                 return SelectedAttackingPokemonPtr;
+                }
+                
+
+                
             }
             else if(pressedButton != 'a' && pressedButton != 'd' && pressedButton != 'y' && pressedButton != 'Y'){
                 cout << "Invalid button try again" << endl;
@@ -814,9 +809,9 @@ class Battle{
         
         int tempCharacterCount;
 
-        bool isStrong = false;
-        bool isWeak = false;
-
+        
+        
+        
 
 
         if(attackingPokemon->attackNames.size() > 1 && !attackingPokemon->attackNames[1].empty()){
@@ -840,13 +835,19 @@ class Battle{
 
         cout << endl;
 
+        // Checking if the attack is strong or weak
         if(attackingPokemon->attackNames.size() > 1 && !attackingPokemon->attackNames[1].empty()){
-            if(checkIfStrong(attackingPokemon->attackNames[0], attackedPokemon)){
+            bool isItStrong0 = checkIfStrong(convertAttackMove(attackingPokemon->attackNames[0]), attackedPokemon);
+            bool isItStrong1 = checkIfStrong(convertAttackMove(attackingPokemon->attackNames[1]), attackedPokemon);
+            bool isItWeak0 = checkIfWeak(convertAttackMove(attackingPokemon->attackNames[0]), attackedPokemon);
+            bool isItWeak1 = checkIfWeak(convertAttackMove(attackingPokemon->attackNames[1]), attackedPokemon);
+            
+            if(isItStrong0 == true && isItWeak0 == false){
                 tempCharacterCount = characterBetweenTwo - CalculateStringLength("Strong");
                 cout << "Strong";
 
 
-            }else if(checkIfWeak(attackingPokemon->attackNames[0], attackedPokemon)){
+            }else if(isItWeak0 == true && isItStrong0 == false){
                 tempCharacterCount = characterBetweenTwo - CalculateStringLength("Weak");
                 cout << "Weak";
 
@@ -860,12 +861,12 @@ class Battle{
             cout << " ";
             }
 
-            if(checkIfStrong(attackingPokemon->attackNames[1], attackedPokemon)){
+            if(isItStrong1 == true && isItWeak1 == false){
                 tempCharacterCount = characterBetweenTwo - CalculateStringLength("Strong");
                 cout << "Strong";
 
 
-            }else if(checkIfWeak(attackingPokemon->attackNames[1], attackedPokemon)){
+            }else if(isItWeak1 == true && isItStrong1 == false){
                 tempCharacterCount = characterBetweenTwo - CalculateStringLength("Weak");
                 cout << "Weak";
 
@@ -876,13 +877,15 @@ class Battle{
             }
         
         }else if(size(attackingPokemon->attackNames) > 0 && !attackingPokemon->attackNames[0].empty()){
+            bool isItStrong0 = checkIfStrong(convertAttackMove(attackingPokemon->attackNames[0]), attackedPokemon);
+            bool isItWeak0 = checkIfWeak(convertAttackMove(attackingPokemon->attackNames[0]), attackedPokemon);
             // tempCharacterCount = characterBetweenTwo - (CalculateStringLength(attackingPokemon->attackNames[0]));
-            if(checkIfStrong(attackingPokemon->attackNames[0], attackedPokemon)){
+            if(isItStrong0 == true && isItWeak0 == false){
                 tempCharacterCount = characterBetweenTwo - CalculateStringLength("Strong");
                 cout << "Strong";
 
 
-            }else if(checkIfWeak(attackingPokemon->attackNames[0], attackedPokemon)){
+            }else if(isItWeak0 == true && isItStrong0 == false){
                 tempCharacterCount = characterBetweenTwo - CalculateStringLength("Weak");
                 cout << "Weak";
 
@@ -1052,12 +1055,17 @@ class Battle{
         if(strong == true) damage *= 2;
         if(weak == true) damage /= 2;
 
-        if(attackedPokemon->health <= damage){
+        if(attackedPokemon->health == 0){
+            attackedPokemon->health = 0;
+            cout << attackedPokemon->name << " is already fainted, are you mad?" << endl;
+
+        }
+        else if(attackedPokemon->health <= damage){
             attackedPokemon->health = 0;
             cout << attackedPokemon->name << " is fainted" << endl;
 
         }
-        if(attackedPokemon->health > damage){
+        else if(attackedPokemon->health > damage){
             attackedPokemon->health -= damage;
             cout << attackedPokemon->name << " got " << damage << " damage!" << endl;
         }
@@ -1081,9 +1089,11 @@ class Battle{
 
             if(Team2->isTeamDown() == true){
                 cout << endl << Team1->teamName << " won the battle!" << endl << endl;
+                break;
             }
             if(Team1->isTeamDown() == true){
                 cout << endl << Team2->teamName << " won the battle!" << endl << endl;
+                break;
             }
 
             if(whosTurn == 1) whosTurn = 2;
@@ -1135,6 +1145,11 @@ vector<string> convertStrenght(string wantedType){
     if(wantedType == "Fire"){
         returnedStrenghts.push_back("Ice");
         returnedStrenghts.push_back("Grass");
+        return returnedStrenghts;
+    }
+    if(wantedType == "Water"){
+        returnedStrenghts.push_back("Fire");
+        returnedStrenghts.push_back("Rock");
         return returnedStrenghts;
     }
     if(wantedType == "Ice"){
@@ -1410,7 +1425,7 @@ void assignTypeFeatures(){
 
 int main(){
     Charizard charizard;
-    Machamp machamp;
+    Crabominable crabominable;
     Eiscue eiscue;
     Jolteon jolteon;
 
@@ -1427,7 +1442,7 @@ int main(){
     Team OGLER = {"OGLER"};
 
     OGLER.addMember(charizard);
-    OGLER.addMember(machamp);
+    OGLER.addMember(crabominable);
     OGLER.addMember(eiscue);
     OGLER.addMember(jolteon);
 
@@ -1442,7 +1457,7 @@ int main(){
     Hacilar.addMember(kartana);
     Hacilar.displayMembers();
 
-    eiscue.gainExp(1050);
+    eiscue.gainExp(1000);
     
     OGLER.displayMembers();
 
@@ -1452,6 +1467,7 @@ int main(){
     Battle Battle1;
     Battle1.addTeam(&OGLER, 1);
     Battle1.addTeam(&Hacilar, 2);
+    // if(checkIfWeak("Ice", &charizard) == 1) cout << "DEBUG | " <<  << endl;
     /*Battle1.updateRound();
     Battle1.displayAttackMove(charizard, kartana);
     Battle1.selectAttackMove(charizard, kartana);

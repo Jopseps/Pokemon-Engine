@@ -750,6 +750,3 @@ int main(){
 
     Battle1.startBattle(true);
 }
-
-
-// Yusuf Mert Turan

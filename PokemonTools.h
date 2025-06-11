@@ -41,52 +41,6 @@ vector<string> convertStrenght(string wantedType){
         return returnedStrenghts;
     }
     else return returnedStrenghts;
-
-    /*Fire::strengths.push_back("Ice");
-    Fire::strengths.push_back("Grass");
-    Fire::weaknesses.push_back("Water");
-    Fire::weaknesses.push_back("Rock");
-
-    // ICE
-    Ice::strengths.push_back("Dragon");
-    Ice::strengths.push_back("Grass");
-    Ice::weaknesses.push_back("Fire");
-    Ice::weaknesses.push_back("Ice");
-
-    // FIGHTING
-    Fighting::strengths.push_back("Ice");
-    Fighting::strengths.push_back("Rock");
-    Fighting::weaknesses.push_back("Fairy");
-    Fighting::weaknesses.push_back("Water");
-
-    // ELECTRIC
-    Electric::strengths.push_back("Water");
-    Electric::strengths.push_back("Steel"); // Mana
-    Electric::weaknesses.push_back("Grass");
-    Electric::weaknesses.push_back("Electric");
-
-    // GRASS
-    Grass::strengths.push_back("Water");
-    Grass::strengths.push_back("Rock");
-    Grass::weaknesses.push_back("Grass");
-    Grass::weaknesses.push_back("Fire");
-    
-    // ROCK
-    Rock::strengths.push_back("Fire");
-    Rock::strengths.push_back("Ice");
-    Rock::weaknesses.push_back("Fighting");
-    Rock::weaknesses.push_back("Steel");
-
-    // STEEL
-    Steel::strengths.push_back("Ice");
-    Steel::strengths.push_back("Rock");
-    Steel::weaknesses.push_back("Electric");
-    Steel::weaknesses.push_back("Fire");
-    Steel::weaknesses.push_back("Water");*/
-
-
-
-
 }
 
 vector<string> convertWeakness(string wantedType){
@@ -129,68 +83,8 @@ vector<string> convertWeakness(string wantedType){
     else return returnedWeaknesses;
 }
 
-vector<string> Fire::strengths;
-vector<string> Fire::weaknesses;
-vector<string> Fighting::strengths;
-vector<string> Fighting::weaknesses;
-vector<string> Water::strengths;
-vector<string> Water::weaknesses;
-vector<string> Ice::strengths;
-vector<string> Ice::weaknesses;
-vector<string> Electric::strengths;
-vector<string> Electric::weaknesses;
-vector<string> Grass::strengths;
-vector<string> Grass::weaknesses;
-vector<string> Rock::strengths;
-vector<string> Rock::weaknesses;
-vector<string> Steel::strengths;
-vector<string> Steel::weaknesses;
 
 void assignTypeFeatures(){
-    // Fire
-    Fire::strengths.push_back("Ice");
-    Fire::strengths.push_back("Grass");
-    Fire::weaknesses.push_back("Water");
-    Fire::weaknesses.push_back("Rock");
-
-    // ICE
-    Ice::strengths.push_back("Dragon");
-    Ice::strengths.push_back("Grass");
-    Ice::weaknesses.push_back("Fire");
-    Ice::weaknesses.push_back("Ice");
-
-    // FIGHTING
-    Fighting::strengths.push_back("Ice");
-    Fighting::strengths.push_back("Rock");
-    Fighting::weaknesses.push_back("Fairy");
-    Fighting::weaknesses.push_back("Water");
-
-    // ELECTRIC
-    Electric::strengths.push_back("Water");
-    Electric::strengths.push_back("Steel"); // Mana
-    Electric::weaknesses.push_back("Grass");
-    Electric::weaknesses.push_back("Electric");
-
-    // GRASS
-    Grass::strengths.push_back("Water");
-    Grass::strengths.push_back("Rock");
-    Grass::weaknesses.push_back("Grass");
-    Grass::weaknesses.push_back("Fire");
-    
-    // ROCK
-    Rock::strengths.push_back("Fire");
-    Rock::strengths.push_back("Ice");
-    Rock::weaknesses.push_back("Fighting");
-    Rock::weaknesses.push_back("Steel");
-
-    // STEEL
-    Steel::strengths.push_back("Ice");
-    Steel::strengths.push_back("Rock");
-    Steel::weaknesses.push_back("Electric");
-    Steel::weaknesses.push_back("Fire");
-    Steel::weaknesses.push_back("Water");
-
-
     for(int i = 0; i < size(allPokemons); i++){
         allPokemons[i]->attackNames.clear();
         if(size(allPokemons[i]->type) > 1){
@@ -267,9 +161,6 @@ void assignTypeFeatures(){
 
             if(allPokemons[i]->type[0] == "Steel"){
             allPokemons[i]->attackNames.push_back("Blade");}
-
         }
-
     }
-
 }

@@ -19,10 +19,13 @@ class Pokemon{
     
     vector<string> type;
     vector<string> attackNames;
-    
 
-    
+    vector<string> strengths;
 
+    // Counters this Pokemon
+    vector<string> weaknesses;
+    
+    
     Team* assignedTeam;
 
     Trainer* assignedTrainer;
@@ -77,15 +80,6 @@ class Pokemon{
     }
 
 
-
-    // Retired levelUp function
-    /*void levelUp(int quantity){
-        level += quantity;
-        exp -= levelUpThreshold;
-        levelUpThreshold =  solidLevelUpThreshold * pow(level, 2/3);
-        if(exp >= levelUpThreshold) levelUp(1);
-    }*/
-
     void pokedex(){
         for(int i = 1; i <= 20; i++){cout << "-"; if(i == 10) cout << " Pokedex ";}; cout << endl;
         cout << "Name: " << name << endl;
@@ -130,10 +124,6 @@ class Pokemon{
             cout << endl;
         }
         else{cout << "This Pokemon isn't strong against any type" << endl;}
-
-
-    
-
 
         cout << "Weak against: "; 
         
@@ -237,11 +227,7 @@ int Pokemon::PokemonCount = 0;
 
 class Fire : public Pokemon{
     public:
-    static vector<string> strengths;
 
-    // Counters this Pokemon
-    static vector<string> weaknesses;
-    
     virtual void fire(){
         cout << name << " breathed fire!" << endl;
     }
@@ -256,10 +242,6 @@ class Fire : public Pokemon{
 
 class Fighting : public virtual Pokemon{
     public:
-    static vector<string> strengths;
-
-    // Counters this Pokemon
-    static vector<string> weaknesses;
 
     virtual void fight(){
         cout << name << " showed its fighting skills!" << endl;
@@ -273,11 +255,7 @@ class Fighting : public virtual Pokemon{
 
 class Water : public virtual Pokemon{
     public:
-    static vector<string> strengths;
 
-    // Counters this Pokemon
-    static vector<string> weaknesses;
-    
     virtual void spray(){
         cout << name << " sprayed water!" << endl;
     }
@@ -290,11 +268,7 @@ class Water : public virtual Pokemon{
 
 class Ice : public virtual Pokemon{
     public:
-    static vector<string> strengths;
 
-    // Counters this Pokemon
-    static vector<string> weaknesses;
-    
     virtual void freeze(){
         cout << name << " rained a few snowflakes!" << endl;
     }
@@ -307,11 +281,7 @@ class Ice : public virtual Pokemon{
 
 class Electric : public virtual Pokemon{
     public:
-    static vector<string> strengths;
 
-    // Counters this Pokemon
-    static vector<string> weaknesses;
-    
     virtual void electrocute(){
         cout << name << " casually lighted a light bulb!" << endl;
     }
@@ -324,11 +294,7 @@ class Electric : public virtual Pokemon{
 
 class Grass : public virtual Pokemon{
     public:
-    static vector<string> strengths;
 
-    // Counters this Pokemon
-    static vector<string> weaknesses;
-    
     virtual void ivy(){
         cout << name << " showed up a bunch of vines out of the grass!" << endl;
     }
@@ -341,11 +307,7 @@ class Grass : public virtual Pokemon{
 
 class Rock : public virtual Pokemon{
     public:
-    static vector<string> strengths;
 
-    // Counters this Pokemon
-    static vector<string> weaknesses;
-    
     virtual void boulder(){
         cout << name << " pulled a bunch of rocks out of the ground!" << endl;
     }
@@ -358,12 +320,7 @@ class Rock : public virtual Pokemon{
 
 class Steel : public virtual Pokemon{
     public:
-    static vector<string> strengths;
 
-    // Counters this Pokemon
-    static vector<string> weaknesses;
-
-    
         // Slice
     virtual void blade(){
         cout << name << " sliced an apple!" << endl;

@@ -85,9 +85,9 @@ vector<string> convertWeakness(string wantedType){
 
 
 void assignTypeFeatures(){
-    for(int i = 0; i < size(allPokemons); i++){
+    for(int i = 0; i < allPokemons.size(); i++){
         allPokemons[i]->attackNames.clear();
-        if(size(allPokemons[i]->type) > 1){
+        if(allPokemons[i]->type.size() > 1){
             if(allPokemons[i]->type[0] == "Fire"){
             allPokemons[i]->attackNames.push_back("Fire");}
 
@@ -137,7 +137,7 @@ void assignTypeFeatures(){
             if(allPokemons[i]->type[1] == "Steel"){
             allPokemons[i]->attackNames.push_back("Blade");}
             
-        }else if(size(allPokemons[i]->type) == 1){
+        }else if(allPokemons[i]->type.size() == 1){
             if(allPokemons[i]->type[0] == "Fire"){
             allPokemons[i]->attackNames.push_back("Fire");}
 

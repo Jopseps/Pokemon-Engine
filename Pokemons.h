@@ -100,25 +100,25 @@ class Pokemon{
         
         cout << "Strong against: "; 
 
-        if(size(type) > 1 && !type[1].empty()){
+        if(type.size() > 1 && !type[1].empty()){
 
-            for(int i = 0; i < size(convertStrenght(type[0])); i++){
+            for(int i = 0; i < convertStrenght(type[0]).size(); i++){
                 cout << convertStrenght(type[0])[i];
-                if(i != size(convertStrenght(type[0])) - 1) cout << ", ";
+                if(i != convertStrenght(type[0]).size() - 1) cout << ", ";
             }
             cout << "; ";
-            for(int i = 0; i < size(convertStrenght(type[1])); i++){
+            for(int i = 0; i < convertStrenght(type[1]).size(); i++){
                 cout << convertStrenght(type[1])[i];
-                if(i != size(convertStrenght(type[1])) - 1) cout << ", ";
+                if(i != convertStrenght(type[1]).size() - 1) cout << ", ";
             }
             
             cout << endl;
         }
-        else if(size(type) == 1){
+        else if(type.size() == 1){
             
-            for(int i = 0; i < size(convertStrenght(type[0])); i++){
+            for(int i = 0; i < convertStrenght(type[0]).size(); i++){
                 cout << convertStrenght(type[0])[i];
-                if(i != size(type)) cout << ", ";
+                if(i != type.size()) cout << ", ";
             }
             
             cout << endl;
@@ -127,25 +127,25 @@ class Pokemon{
 
         cout << "Weak against: "; 
         
-        if(size(type) > 1 && !type[1].empty()){
+        if(type.size() > 1 && !type[1].empty()){
 
-            for(int i = 0; i < size(convertWeakness(type[0])); i++){
+            for(int i = 0; i < convertWeakness(type[0]).size(); i++){
                 cout << convertWeakness(type[0])[i];
-                if(i != size(convertWeakness(type[0])) - 1) cout << ", ";
+                if(i != convertWeakness(type[0]).size() - 1) cout << ", ";
             }
             cout << "; ";
-            for(int i = 0; i < size(convertWeakness(type[1])); i++){
+            for(int i = 0; i < convertWeakness(type[1]).size(); i++){
                 cout << convertWeakness(type[1])[i];
-                if(i != size(convertWeakness(type[1])) - 1) cout << ", ";
+                if(i != (convertWeakness(type[1]).size() - 1)) cout << ", ";
             }
             
             cout << endl;
         }
-        else if(size(type) == 1){
+        else if(type.size() == 1){
             
-            for(int i = 0; i < size(convertWeakness(type[0])); i++){
+            for(int i = 0; i < convertWeakness(type[0]).size(); i++){
                 cout << convertWeakness(type[0])[i];
-                if(i != size(type)) cout << ", ";
+                if(i != type.size()) cout << ", ";
             }
             
             cout << endl;
@@ -157,14 +157,14 @@ class Pokemon{
 
     // Can be merged Birleştirilebilir mana
     virtual bool checkStrenghts(string searchedType, vector<string> s){
-        for(int i = 0; i < size(s); i++){
+        for(int i = 0; i < s.size(); i++){
             if(searchedType == s[i]) return true;
         }
         return false;
     }
 
     virtual bool checkWeakness(string searchedType, vector<string> w){
-        for(int i = 0; i < size(w); i++){
+        for(int i = 0; i < w.size(); i++){
             if(searchedType == w[i]) return true;
         }
         return false;

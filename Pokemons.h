@@ -224,7 +224,6 @@ int Pokemon::PokemonCount = 0;
 
 
 
-
 class Fire : public Pokemon{
     public:
 

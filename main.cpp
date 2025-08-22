@@ -67,7 +67,7 @@ class Team{
     }
 
     void healAllPokemons(){
-        for(int i = 0; i < size(teamMembers); i++){
+        for(int i = 0; i < teamMembers.size(); i++){
             teamMembers[i]->health = teamMembers[i]->maxHealth;
         }
     }
@@ -207,7 +207,7 @@ class Battle{
             pressedButton = '0';
             pressedButton = getArrowKey(); 
             if(pressedButton == 'd'){
-                if(selectedPokemon < size(attackedTeam->teamMembers)) selectedPokemon++;
+                if(selectedPokemon < attackedTeam->teamMembers.size()) selectedPokemon++;
             }
             else if(pressedButton == 'a'){
                 if(selectedPokemon > 1) selectedPokemon--;
@@ -258,7 +258,7 @@ class Battle{
             pressedButton = '0';
             pressedButton = getArrowKey();
             if(pressedButton == 'd'){
-                if(selectedPokemon < size(attackingTeam->teamMembers)) selectedPokemon++;
+                if(selectedPokemon < attackingTeam->teamMembers.size()) selectedPokemon++;
             }
             if(pressedButton == 'a'){
                 if(selectedPokemon > 1) selectedPokemon--;
@@ -315,7 +315,7 @@ class Battle{
             }
             cout << attackingPokemon->attackNames[1];
         
-        }else if(size(attackingPokemon->attackNames) > 0){
+        }else if(attackingPokemon->attackNames.size() > 0){
             tempCharacterCount = characterBetweenTwo - (CalculateStringLength(attackingPokemon->attackNames[0]));
 
             cout << attackingPokemon->attackNames[0];
@@ -367,7 +367,7 @@ class Battle{
                 cout << "Normal";
             }
         
-        }else if(size(attackingPokemon->attackNames) > 0 && !attackingPokemon->attackNames[0].empty()){
+        }else if(attackingPokemon->attackNames.size() > 0 && !attackingPokemon->attackNames[0].empty()){
             bool isItStrong0 = checkIfStrong(convertAttackMove(attackingPokemon->attackNames[0]), attackedPokemon);
             bool isItWeak0 = checkIfWeak(convertAttackMove(attackingPokemon->attackNames[0]), attackedPokemon);
             // tempCharacterCount = characterBetweenTwo - (CalculateStringLength(attackingPokemon->attackNames[0]));
@@ -408,7 +408,7 @@ class Battle{
             pressedButton = '0';
             pressedButton = getArrowKey(); 
             if(pressedButton == 'd'){
-                if(selectedMoveOrder < size(attackingPokemon.attackNames)) selectedMoveOrder++;
+                if(selectedMoveOrder < attackingPokemon.attackNames.size()) selectedMoveOrder++;
             }
             if(pressedButton == 'a'){
                 if(selectedMoveOrder > 1) selectedMoveOrder--;
@@ -458,8 +458,8 @@ class Battle{
 
 
     bool checkIfStrong(string attackType, const Pokemon *attackedPokemon){
-        for(int i = 0; i < size(convertStrenght(attackType)); i++){
-            for(int j = 0; j < size(attackedPokemon->type); j++){
+        for(int i = 0; i < convertStrenght(attackType).size(); i++){
+            for(int j = 0; j < attackedPokemon->type.size(); j++){
                 if(convertStrenght(attackType)[i] == attackedPokemon->type[j]){
                     return true;
                 }
@@ -469,8 +469,8 @@ class Battle{
     }
 
     bool checkIfWeak(string attackType, const Pokemon *attackedPokemon){
-        for(int i = 0; i < size(convertWeakness(attackType)); i++){
-            for(int j = 0; j < size(attackedPokemon->type); j++){
+        for(int i = 0; i < convertWeakness(attackType).size(); i++){
+            for(int j = 0; j < attackedPokemon->type.size(); j++){
                 if(convertWeakness(attackType)[i] == attackedPokemon->type[j]){
                     return true;
                 }
